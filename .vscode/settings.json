@@ -1,0 +1,47 @@
+{
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.codeAnalysis.clangTidy.path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\Llvm\\x64\\bin\\clang-tidy.exe",
+    "C_Cpp.codeAnalysis.clangTidy.args": [
+        "--config-file=${workspaceFolder}/.clang-tidy"
+    ],
+    "C_Cpp.codeAnalysis.runAutomatically": true,
+    "C_Cpp.codeAnalysis.exclude": {
+        "**/nanodbc/**": true
+    },
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.default.cppStandard": "c++20",
+    "C_Cpp.default.cStandard": "c17",
+    "C_Cpp.default.defines": [
+        "WIN32",
+        "_WINDOWS",
+        "_USRDLL",
+        "OLEDBIO_EXPORTS"
+    ],
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/nanodbc"
+    ],
+    "files.associations": {
+        "*.h": "cpp",
+        "*.cpp": "cpp"
+    },
+    // Navigation settings (like VS2026)
+    "editor.gotoLocation.multipleDefinitions": "goto",
+    "editor.gotoLocation.multipleDeclarations": "goto",
+    "editor.gotoLocation.multipleImplementations": "goto",
+    "editor.gotoLocation.multipleReferences": "peek",
+    "editor.gotoLocation.multipleTypeDefinitions": "goto",
+    // Enhanced IntelliSense
+    "C_Cpp.autocomplete": "default",
+    "C_Cpp.autocompleteAddParentheses": true,
+    "C_Cpp.enhancedColorization": "enabled",
+    "C_Cpp.hover": "default",
+    // Semantic highlighting
+    "editor.semanticHighlighting.enabled": true,
+    // Better symbol search
+    "C_Cpp.default.browse.path": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/nanodbc"
+    ],
+    "C_Cpp.default.browse.limitSymbolsToIncludedHeaders": false
+}

@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{7648185d-4d81-4f74-9e34-ec5a563296d5}</ProjectGuid>
+    <RootNamespace>OLEDBIO</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;OLEDBIO_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>OLEDBIO.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;OLEDBIO_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;OLEDBIO_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;OLEDBIO_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="accdiv.h" />
+    <ClInclude Include="CompositeMergeIO.h" />
+    <ClInclude Include="MergeOps.h" />
+    <ClInclude Include="MergeQueries.h" />
+    <ClInclude Include="MergeSelectors.h" />
+    <ClInclude Include="MergeUtils.h" />
+    <ClInclude Include="nanodbc\nanodbc.h" />
+    <ClInclude Include="nanodbc\variant_row_cached_result.h" />
+    <ClInclude Include="ODBCErrorChecking.h" />
+    <ClInclude Include="OLEDBIO.h" />
+    <ClInclude Include="OLEDBIOCommon.h" />
+    <ClInclude Include="PerformanceIO_Common.h" />
+    <ClInclude Include="PerformanceIO_DSumdata.h" />
+    <ClInclude Include="PerformanceIO_Hkeyrltn.h" />
+    <ClInclude Include="PerformanceIO_Holdings.h" />
+    <ClInclude Include="PerformanceIO_Holdtot.h" />
+    <ClInclude Include="PerformanceIO_Lookups.h" />
+    <ClInclude Include="PerformanceIO_Perfctrl.h" />
+    <ClInclude Include="PerformanceIO_Perfkey.h" />
+    <ClInclude Include="PerformanceIO_Scripts.h" />
+    <ClInclude Include="PerformanceIO_SecTrans.h" />
+    <ClInclude Include="PerformanceIO_Summdata.h" />
+    <ClInclude Include="PerformanceIO_Taxperf.h" />
+    <ClInclude Include="PerformanceIO_UnitValue.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AmortizeIO.cpp" />
+    <ClCompile Include="AssetPricingIO.cpp" />
+    <ClCompile Include="DateFunctions.cpp" />
+    <ClCompile Include="DigenerateOps.cpp" />
+    <ClCompile Include="DigenerateQueries.cpp" />
+    <ClCompile Include="DigenerateSelectors.cpp" />
+    <ClCompile Include="DigenerateUtils.cpp" />
+    <ClCompile Include="DipayIO.cpp" />
+    <ClCompile Include="MaturityIO.cpp" />
+    <ClCompile Include="MergeOps.cpp" />
+    <ClCompile Include="MergeQueries.cpp" />
+    <ClCompile Include="MergeSelectors.cpp" />
+    <ClCompile Include="MergeUtils.cpp" />
+    <ClCompile Include="nanodbc\nanodbc.cpp" />
+    <ClCompile Include="nanodbc\variant_row_cached_result.cpp" />
+    <ClCompile Include="OLEDBIO.cpp" />
+    <ClCompile Include="OLEDBIOCommon.cpp" />
+    <ClCompile Include="PerformanceIO_Common.cpp" />
+    <ClCompile Include="PerformanceIO_DSumdata.cpp" />
+    <ClCompile Include="PerformanceIO_Hkeyrltn.cpp" />
+    <ClCompile Include="PerformanceIO_Holdings.cpp" />
+    <ClCompile Include="PerformanceIO_Holdtot.cpp" />
+    <ClCompile Include="PerformanceIO_Lookups.cpp" />
+    <ClCompile Include="PerformanceIO_Perfctrl.cpp" />
+    <ClCompile Include="PerformanceIO_Perfkey.cpp" />
+    <ClCompile Include="PerformanceIO_Scripts.cpp" />
+    <ClCompile Include="PerformanceIO_SecTrans.cpp" />
+    <ClCompile Include="PerformanceIO_Summdata.cpp" />
+    <ClCompile Include="PerformanceIO_Taxperf.cpp" />
+    <ClCompile Include="PerformanceIO_UnitValue.cpp" />
+    <ClCompile Include="RollIO_Account.cpp" />
+    <ClCompile Include="RollIO_Holdmap.cpp" />
+    <ClCompile Include="RollIO_Portmain.cpp" />
+    <ClCompile Include="RollIO_Position.cpp" />
+    <ClCompile Include="RollIO_Trans.cpp" />
+    <ClCompile Include="TransImportIO_new.cpp" />
+    <ClCompile Include="TransIO_AccDiv.cpp" />
+    <ClCompile Include="TransIO_Assets.cpp" />
+    <ClCompile Include="TransIO_Currency.cpp" />
+    <ClCompile Include="TransIO_DControl.cpp" />
+    <ClCompile Include="TransIO_Deriv.cpp" />
+    <ClCompile Include="TransIO_Divhist.cpp" />
+    <ClCompile Include="TransIO_DTrans.cpp" />
+    <ClCompile Include="TransIO_DTransDesc.cpp" />
+    <ClCompile Include="TransIO_Fixedinc.cpp" />
+    <ClCompile Include="TransIO_Hedgexref.cpp" />
+    <ClCompile Include="TransIO_Holdcash.cpp" />
+    <ClCompile Include="TransIO_Holddel.cpp" />
+    <ClCompile Include="TransIO_Holdings.cpp" />
+    <ClCompile Include="TransIO_Holdmap.cpp" />
+    <ClCompile Include="TransIO_Login.cpp" />
+    <ClCompile Include="TransIO_Payrec.cpp" />
+    <ClCompile Include="TransIO_Portlock.cpp" />
+    <ClCompile Include="TransIO_Portmain.cpp" />
+    <ClCompile Include="TransIO_Sectype.cpp" />
+    <ClCompile Include="TransIO_SecurityPrice.cpp" />
+    <ClCompile Include="TransIO_StarsDat.cpp" />
+    <ClCompile Include="TransIO_Subaccount.cpp" />
+    <ClCompile Include="TransIO_Syssettings.cpp" />
+    <ClCompile Include="TransIO_Trans.cpp" />
+    <ClCompile Include="TransIO_TransDesc.cpp" />
+    <ClCompile Include="TransIO_Trantype.cpp" />
+    <ClCompile Include="ValuationIO_Accdiv.cpp" />
+    <ClCompile Include="ValuationIO_Divhist.cpp" />
+    <ClCompile Include="ValuationIO_Histpric.cpp" />
+    <ClCompile Include="ValuationIO_Holdings.cpp" />
+    <ClCompile Include="ValuationIO_Holdtot.cpp" />
+    <ClCompile Include="ValuationIO_Payrec.cpp" />
+    <ClCompile Include="ValuationIO_Segments.cpp" />
+    <ClCompile Include="ValuationIO_Utils.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

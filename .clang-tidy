@@ -1,0 +1,96 @@
+---
+# Enable all clang-tidy checks with maximum strictness
+Checks: >
+  *,
+  -llvmlibc-*,
+  -fuchsia-*,
+  -altera-*,
+  -android-*,
+  -zircon-*,
+  -abseil-*,
+  -linuxkernel-*,
+  -llvm-header-guard,
+  -modernize-use-trailing-return-type,
+  -readability-identifier-length
+
+WarningsAsErrors: ''
+
+HeaderFilterRegex: '.*'
+
+CheckOptions:
+  # Naming conventions
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.VariableCase
+    value: camelBack
+  - key: readability-identifier-naming.ParameterCase
+    value: camelBack
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  
+  # Magic numbers
+  - key: readability-magic-numbers.IgnoredIntegerValues
+    value: '0;1;2;-1'
+  - key: readability-magic-numbers.IgnoredFloatingPointValues
+    value: '0.0;1.0;100.0'
+  
+  # Function complexity
+  - key: readability-function-cognitive-complexity.Threshold
+    value: '50'
+  - key: readability-function-size.LineThreshold
+    value: '200'
+  - key: readability-function-size.StatementThreshold
+    value: '150'
+  - key: readability-function-size.ParameterThreshold
+    value: '10'
+  
+  # Braces around statements
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '1'
+  
+  # Include order
+  - key: llvm-include-order.IgnoreMainInclude
+    value: 'true'
+  
+  # Modernize
+  - key: modernize-use-nullptr.NullMacros
+    value: 'NULL'
+  - key: modernize-loop-convert.MinConfidence
+    value: 'reasonable'
+  
+  # Performance
+  - key: performance-move-const-arg.CheckTriviallyCopyableMove
+    value: 'true'
+  - key: performance-unnecessary-value-param.AllowedTypes
+    value: ''
+
+  # Bugprone
+  - key: bugprone-argument-comment.StrictMode
+    value: 'true'
+  - key: bugprone-easily-swappable-parameters.MinimumLength
+    value: '3'
+  - key: bugprone-suspicious-string-compare.WarnOnLogicalNotComparison
+    value: 'true'
+
+  # Misc
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: 'true'
+
+  # Cppcoreguidelines
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
+    value: '0;1;2;-1'
+  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value: 'true'
+  - key: cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions
+    value: 'true'
+...

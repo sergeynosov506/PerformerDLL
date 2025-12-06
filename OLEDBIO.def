@@ -1,0 +1,251 @@
+LIBRARY "OLEDBIO"
+;DESCRIPTION "OLEDBIO DLL - Generated 2025-12-04 20:42:28"
+EXPORTS
+; Clean function names mapped from __stdcall decorated names
+; Total exports: 483
+    AccountDeleteHedgxref = _AccountDeleteHedgxref@24
+    AccountDeleteHoldcash
+    AccountDeleteHoldings = _AccountDeleteHoldings@24
+    AccountDeletePayrec
+    AccountDeletePortmain = _AccountDeletePortmain@12
+    AccountInsertHedgxref = _AccountInsertHedgxref@28
+    AccountInsertHoldcash = _AccountInsertHoldcash@28
+    AccountInsertHoldings
+    AccountInsertPayrec
+    AccountInsertPortmain
+    AmortizeUnload = _AmortizeUnload@36
+    CheckIfTransExists = _CheckIfTransExists@12
+    CloseDivIntGenerateIO
+    CommitDBTransaction
+    CurrentDateAndTime
+    CurrentMonthEnd = _CurrentMonthEnd@4
+    DeleteAccdivAllLots = _DeleteAccdivAllLots@12
+    DeleteAccdivOneLot
+    DeleteAccruingAccdivOneLot = _DeleteAccruingAccdivOneLot@8
+    DeleteAccruingDivhistOneLot
+    DeleteBankstat = _DeleteBankstat@16
+    DeleteDailyFlows = _DeleteDailyFlows@12
+    DeleteDailyFlowsByID = _DeleteDailyFlowsByID@12
+    DeleteDailyUnitValueForADate = _DeleteDailyUnitValueForADate@20
+    DeleteDivhist
+    DeleteDivhistAllLots = _DeleteDivhistAllLots@20
+    DeleteDivhistOneLot
+    DeleteDSumdata = _DeleteDSumdata@16
+    DeleteFWTrans
+    DeleteHedgxref = _DeleteHedgxref@28
+    DeleteHkeyrltnForAnAccount = _DeleteHkeyrltnForAnAccount@12
+    DeleteHoldcash
+    DeleteHoldings
+    DeleteHoldtotForAnAccount = _DeleteHoldtotForAnAccount@8
+    DeleteMarkedUnitValue = _DeleteMarkedUnitValue@12
+    DeleteMonthSum
+    DeleteMonthSumForPortfolio = _DeleteMonthSumForPortfolio@16
+    DeletePayrec
+    DeletePerfkey = _DeletePerfkey@8
+    DeletePortLock
+    DeletePriclist = _DeletePriclist@364
+    DeleteSummdata = _DeleteSummdata@16
+    DeleteSummdataForPortfolio = _DeleteSummdataForPortfolio@16
+    DeleteTaxperf = _DeleteTaxperf@16
+    DeleteUnitValueForPortfolioSince
+    DeleteUnitValueForPortfolioSince2
+    DeleteUnitValueSince
+    DeleteUnitValueSince2 = _DeleteUnitValueSince2@20
+    DivintUnload
+    FreeAmortizeIO
+    FreeAssetPricingIO
+    FreeDivIntGenerateIO
+    FreeDivIntPayIO = _FreeDivIntPayIO@0
+    FreeOLEDBIO
+    FreeValuationIO = _FreeValuationIO@0
+    GetInterSegID
+    GetPortfolioRange
+    GetSecurityPrice = _GetSecurityPrice@20
+    HoldcashForFifoAndAvgAccts
+    HoldcashForHighAccts = _HoldcashForHighAccts@32
+    HoldcashForLifoAccts = _HoldcashForLifoAccts@32
+    HoldcashForLowAccts
+    HoldcashForMaximumGainAccts
+    HoldcashForMinimumGainAccts
+    HolddelUpdate
+    HoldingsForFifoAndAvgAccts = _HoldingsForFifoAndAvgAccts@32
+    HoldingsForHighAccts = _HoldingsForHighAccts@32
+    HoldingsForLifoAccts
+    HoldingsForLowAccts
+    HoldingsForMaximumGainAccts = _HoldingsForMaximumGainAccts@40
+    HoldingsForMinimumGainAccts = _HoldingsForMinimumGainAccts@40
+    HoldingsSumSelect
+    HoldingsSumUpdate
+    InitHoldmap
+    InitHoldmapCS
+    InitializeAssetPricingIO
+    InitializeDivIntGenerateIO
+    InitializeDivIntPayIO = _InitializeDivIntPayIO@8
+    InitializeErrStruct
+    InitializeOLEDBIO
+    InitializeValuationIO
+    InsertDailyFlows = _InsertDailyFlows@52
+    InsertDailySummdata = _InsertDailySummdata@364
+    InsertHedgxref
+    InsertHoldcash
+    InsertHolddel
+    InsertHoldings = _InsertHoldings@380
+    InsertHoldingsBatch = _InsertHoldingsBatch@12
+    InsertHoldtot
+    InsertMonthlySummdata = _InsertMonthlySummdata@364
+    InsertPayrec
+    InsertPayTran
+    InsertPerfkey = _InsertPerfkey@92
+    InsertPerfscriptDetail
+    InsertPerfscriptHeader
+    InsertPeriodSummdata
+    InsertPortLock
+    InsertPriclist = _InsertPriclist@364
+    InsertTaxperf = _InsertTaxperf@388
+    InsertTrans
+    InsertTransDesc
+    InsertUnitValue = _InsertUnitValue@44
+    InsertUnitValueBatch
+    IsAssetInternational = _IsAssetInternational@24
+    IsItABankHoliday = _IsItABankHoliday@8
+    IsItAMarketHoliday = _IsItAMarketHoliday@8
+    IsItAMonthEnd
+    IsItManualForSecurity
+    IsManualClosingPrice = _IsManualClosingPrice@16
+    LastBusinessDay = _LastBusinessDay@16
+    LastMonthEnd
+    MarkPeriodUVForADateRangeAsDeleted
+    NewDateFromCurrent
+    NextBusinessDay
+    NextMonthEnd
+    PITIPSUnload = _PITIPSUnload@40
+    PrintError = _PrintError@36
+    ReadAllHoldmap = _ReadAllHoldmap@40
+    RecalcDailyUV
+    rjulmdy
+    rleapyear = _rleapyear@4
+    rmdyjul = _rmdyjul@8
+    RollbackDBTransaction
+    rstrdate = _rstrdate@8
+    SecurityCharacteristics = _SecurityCharacteristics@48
+    SelectAcctMethod = _SelectAcctMethod@12
+    SelectAdhocPortmain = _SelectAdhocPortmain@12
+    SelectAllAccdiv
+    SelectAllAccdivForAnAccount
+    SelectAllCountries
+    SelectAllDivhistForAnAccount
+    SelectAllForHoldTot = _SelectAllForHoldTot@16
+    SelectAllHedgxrefForAnAccount = _SelectAllHedgxrefForAnAccount@12
+    SelectAllHoldcashForAnAccount = _SelectAllHoldcashForAnAccount@12
+    SelectAllHoldingsForAnAccount
+    SelectAllPartCurrencies
+    SelectAllPartPortmain
+    SelectAllPartSectype = _SelectAllPartSectype@8
+    SelectAllPartTrantype = _SelectAllPartTrantype@8
+    SelectAllPayrecForAnAccount = _SelectAllPayrecForAnAccount@12
+    SelectAllRatings = _SelectAllRatings@8
+    SelectAllScriptHeaderAndDetails = _SelectAllScriptHeaderAndDetails@12
+    SelectAllSegmap = _SelectAllSegmap@8
+    SelectAllSegments = _SelectAllSegments@8
+    SelectAllSubacct
+    SelectAllTemplateHeaderAndDetails = _SelectAllTemplateHeaderAndDetails@12
+    SelectAsofTrans
+    SelectAsofTransCount
+    SelectAsset = _SelectAsset@20
+    SelectBackwardTrans
+    SelectCallPut
+    SelectCFStartDate
+    SelectCurrencySecno
+    SelectDailySummdata
+    SelectDcontrol = _SelectDcontrol@16
+    SelectDtrans = _SelectDtrans@24
+    SelectDtransDesc = _SelectDtransDesc@16
+    SelectForwardTrans
+    SelectHedgxref
+    SelectHoldcash
+    SelectHolddel
+    SelectHoldings
+    SelectHoldmap
+    SelectLastRollDate
+    SelectLastTransNo
+    SelectOneAccdiv
+    SelectOneHisteqty = _SelectOneHisteqty@20
+    SelectOneHistfinc = _SelectOneHistfinc@20
+    SelectOneHistpric
+    SelectOnePartPortmain
+    SelectOneSegment
+    SelectOneTrans
+    SelectOneUnitValue = _SelectOneUnitValue@8
+    SelectPartCurrency
+    SelectPartFixedinc
+    SelectPayrec
+    SelectPendingAccdivTransForAnAccount = _SelectPendingAccdivTransForAnAccount@16
+    SelectPerfctrl = _SelectPerfctrl@12
+    SelectPerfkeys = _SelectPerfkeys@12
+    SelectPerformanceHoldcash
+    SelectPerformanceHoldings
+    SelectPerformanceTransaction = _SelectPerformanceTransaction@32
+    SelectPeriodSummdata
+    SelectPledgedSegment
+    SelectPortLock = _SelectPortLock@12
+    SelectPortmain = _SelectPortmain@12
+    SelectPortmainByUniqueName
+    SelectPorttax = _SelectPorttax@16
+    SelectPositionIndicator = _SelectPositionIndicator@16
+    SelectRegularTransCount = _SelectRegularTransCount@32
+    SelectRevTransNoAndCode
+    SelectSectype
+    SelectSegmain = _SelectSegmain@16
+    SelectSegment
+    SelectSegmentIdFromSegMap
+    SelectSegmentLevelId = _SelectSegmentLevelId@8
+    SelectSellAcctType = _SelectSellAcctType@12
+    SelectStarsDate
+    SelectSyssettings
+    SelectSysvalues = _SelectSysvalues@8
+    SelectTaxperf = _SelectTaxperf@16
+    SelectTrancode
+    SelectTrans = _SelectTrans@32
+    SelectTransByEffectiveDate = _SelectTransByEffectiveDate@32
+    SelectTransByEntryDate
+    SelectTransByTradeDate = _SelectTransByTradeDate@32
+    SelectTransByTransNo = _SelectTransByTransNo@32
+    SelectTransDesc = _SelectTransDesc@16
+    SelectTransForMatchingXref = _SelectTransForMatchingXref@16
+    SelectTrantype = _SelectTrantype@16
+    SelectUnitsForASoldSecurity
+    SelectUnitsHeldForASecurity = _SelectUnitsHeldForASecurity@36
+    SelectUnitValue = _SelectUnitValue@16
+    SelectUnitValueRange
+    SelectUnitValueRange2
+    SelectUnsupervised = _SelectUnsupervised@20
+    SelectUnsupervisedSegmentId
+    SelectWithrclm = _SelectWithrclm@8
+    StartDBTransaction
+    UpdateAccdivDeleteFlag
+    UpdateAmortizeHoldings
+    UpdateBrokerInTrans = _UpdateBrokerInTrans@588
+    UpdateDailySummdata = _UpdateDailySummdata@368
+    UpdateDivhist
+    UpdateDivhistAllLots = _UpdateDivhistAllLots@28
+    UpdateDivhistOneLot = _UpdateDivhistOneLot@32
+    UpdateDtrans = _UpdateDtrans@44
+    UpdateHedgxref = _UpdateHedgxref@8
+    UpdateHoldcash
+    UpdateHoldings = _UpdateHoldings@380
+    UpdateNewPerfkey = _UpdateNewPerfkey@92
+    UpdateNewTransNo
+    UpdateOldPerfkey
+    UpdatePayrec = _UpdatePayrec@116
+    UpdatePerfctrl = _UpdatePerfctrl@32
+    UpdatePerfDate = _UpdatePerfDate@16
+    UpdatePerfscriptHeader = _UpdatePerfscriptHeader@164
+    UpdatePeriodSummdata = _UpdatePeriodSummdata@364
+    UpdatePortmainLastTransNo
+    UpdatePortmainValDate = _UpdatePortmainValDate@12
+    UpdateRevTransNo = _UpdateRevTransNo@16
+    UpdateRollDate
+    UpdateRollDateAndLastTransNo = _UpdateRollDateAndLastTransNo@20
+    UpdateUnitValue = _UpdateUnitValue@48
+    UpdateXrefTransNo
+    UpdateXTransNo = _UpdateXTransNo@16

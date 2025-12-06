@@ -1,0 +1,277 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "shell": {
+            "executable": "cmd.exe",
+            "args": [
+                "/d",
+                "/c",
+                "\"C:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\Common7\\Tools\\VsDevCmd.bat\"",
+                "&&"
+            ]
+        }
+    },
+    "tasks": [
+        {
+            "label": "Build OLEDBIO Debug",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Build",
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build OLEDBIO Release",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /p:Configuration=Release /p:Platform=Win32 /t:Build",
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build OLEDBIO Debug x64",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /p:Configuration=Debug /p:Platform=x64 /t:Build",
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build OLEDBIO Release x64",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /p:Configuration=Release /p:Platform=x64 /t:Build",
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build OLEDBIO All Configurations",
+            "dependsOn": [
+                "Build OLEDBIO Debug",
+                "Build OLEDBIO Release"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Clean OLEDBIO",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /t:Clean",
+            "group": "build",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Rebuild OLEDBIO Debug",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /p:Configuration=Debug /p:Platform=Win32 /t:Rebuild",
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Rebuild OLEDBIO Release",
+            "type": "shell",
+            "command": "msbuild OLEDBIO.vcxproj /p:Configuration=Release /p:Platform=Win32 /t:Rebuild",
+            "group": "build",
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run clang-tidy on current file",
+            "type": "shell",
+            "command": "\"C:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\Llvm\\x64\\bin\\clang-tidy.exe\"",
+            "args": [
+                "${file}",
+                "--config-file=${workspaceFolder}/.clang-tidy",
+                "--",
+                "-std=c++20",
+                "-DWIN32",
+                "-D_WINDOWS",
+                "-D_USRDLL",
+                "-DOLEDBIO_EXPORTS",
+                "-I${workspaceFolder}",
+                "-I${workspaceFolder}/nanodbc"
+            ],
+            "options": {
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
+                }
+            },
+            "group": "test",
+            "problemMatcher": {
+                "owner": "clang-tidy",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+):(\\d+):(\\d+):\\s+(warning|error):\\s+(.+)\\s+\\[(.+)\\]$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5,
+                    "code": 6
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run clang-tidy on all C++ files",
+            "type": "shell",
+            "command": "for %f in (*.cpp) do @\"C:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\VC\\Tools\\Llvm\\x64\\bin\\clang-tidy.exe\" %f --config-file=.clang-tidy -- -std=c++20 -DWIN32 -D_WINDOWS -D_USRDLL -DOLEDBIO_EXPORTS -I. -I./nanodbc 2>&1",
+            "options": {
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
+                }
+            },
+            "group": "test",
+            "problemMatcher": {
+                "owner": "clang-tidy",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+):(\\d+):(\\d+):\\s+(warning|error):\\s+(.+)\\s+\\[(.+)\\]$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5,
+                    "code": 6
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run cppcheck on current file",
+            "type": "shell",
+            "command": "cppcheck",
+            "args": [
+                "--enable=all",
+                "--inconclusive",
+                "--check-level=exhaustive",
+                "--std=c++20",
+                "--platform=win32A",
+                "-DWIN32",
+                "-D_WINDOWS",
+                "-D_USRDLL",
+                "-DOLEDBIO_EXPORTS",
+                "-I.",
+                "-I./nanodbc",
+                "--template=vs",
+                "${file}"
+            ],
+            "options": {
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
+                }
+            },
+            "group": "test",
+            "problemMatcher": {
+                "owner": "cppcheck",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+)\\((\\d+)\\):\\s+(warning|error|style|performance|portability|information):\\s+(.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run cppcheck on all C++ files",
+            "type": "shell",
+            "command": "cppcheck",
+            "args": [
+                "--enable=all",
+                "--inconclusive",
+                "--check-level=exhaustive",
+                "--std=c++20",
+                "--platform=win32A",
+                "-DWIN32",
+                "-D_WINDOWS",
+                "-D_USRDLL",
+                "-DOLEDBIO_EXPORTS",
+                "-I.",
+                "-I./nanodbc",
+                "--template=vs",
+                "--suppress=*:*\\nanodbc\\*",
+                "."
+            ],
+            "options": {
+                "shell": {
+                    "executable": "cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c"
+                    ]
+                }
+            },
+            "group": "test",
+            "problemMatcher": {
+                "owner": "cppcheck",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+)\\((\\d+)\\):\\s+(warning|error|style|performance|portability|information):\\s+(.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run all static analysis",
+            "dependsOn": [
+                "Run clang-tidy on all C++ files",
+                "Run cppcheck on all C++ files"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

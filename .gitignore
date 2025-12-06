@@ -1,0 +1,59 @@
+# Build results
+Debug/
+Release/
+x64/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.exe
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.sdf
+*.opensdf
+*.ncb
+*.aps
+
+# IntelliSense
+*.VC.db
+*.VC.opendb
+ipch/
+
+# Build logs
+*.log
+*.tlog/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE
+.idea/
+*.code-workspace
+
+# Agent/tool configs (optional - remove if you want these in repo)
+# .agent/
+# .vscode/
+
+# Cppcheck
+*.cppcheck
+
+# Archives
+*.zip
+*.7z
+*.rar
