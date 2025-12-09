@@ -202,7 +202,7 @@ EXPORTS
     SelectSellAcctType = _SelectSellAcctType@12
     SelectStarsDate
     SelectSyssettings
-    SelectSysvalues = _SelectSysvalues@8
+    SelectSysValues = _SelectSysvalues@8
     SelectTaxperf = _SelectTaxperf@16
     SelectTrancode
     SelectTrans = _SelectTrans@32
