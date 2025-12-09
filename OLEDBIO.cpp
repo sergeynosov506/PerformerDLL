@@ -414,3 +414,4 @@ DLLAPI ERRSTRUCT STDCALL InitHoldmap(long lAsofDate)
     return zErr;
 }
 #pragma managed(pop)
+nanodbc::connection& GetDBConnection() { return gConn; }
