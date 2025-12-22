@@ -63,6 +63,12 @@ void GetConnectionString(char *sAlias, char *sConnectStr, ERRSTRUCT *pzErr) {
       pfnGetConnStr(sAlias, sConnectStr);
     }
   }
+
+  // Fallback: If no connection string returned, but alias looks like a
+  // connection string (key=value), use it.
+  if (sConnectStr[0] == '\0' && sAlias && strchr(sAlias, '=')) {
+    strncpy_s(sConnectStr, 512, sAlias, _TRUNCATE);
+  }
 }
 
 /**

@@ -57,3 +57,12 @@ ipch/
 *.zip
 *.7z
 *.rar
+
+# Local Database Files
+PerformerDB_Local.sql
+*.mdf
+*.ldf
+
+PerformerDB.sql
+
+Test/TestOLEDBIO.~dpr
