@@ -198,7 +198,7 @@ DLLAPI void STDCALL SelectDtrans(TRANS *pzTR, int iID, char *sSecNo, char *sWi,
       read_long(result, "new_trans_no", &pzTR->lNewTransNo);
       read_long(result, "orig_trans_no", &pzTR->lOrigTransNo);
       read_long(result, "block_trans_no", &pzTR->lBlockTransNo);
-      read_string(result, "x_ID", pzTR->sXID, sizeof(pzTR->sXID));
+      read_int(result, "x_ID", &pzTR->iXID);
 
       read_long(result, "x_trans_no", &pzTR->lXTransNo);
       read_string(result, "x_sec_no", pzTR->sXSecNo, sizeof(pzTR->sXSecNo));

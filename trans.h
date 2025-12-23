@@ -69,7 +69,7 @@ typedef struct
   long		lNewTransNo;
   long		lOrigTransNo;
   long		lBlockTransNo;
-  char		sXID[STR1LEN];
+  int		iXID;
   long		lXTransNo;
   char		sXSecNo[12+NT];
   char		sXWi[1+NT];

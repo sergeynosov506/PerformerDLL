@@ -118,7 +118,7 @@ static void FillDivintUnloadStruct(nanodbc::result &result, DILIBSTRUCT *pzDL) {
 // ============================================================================
 // InsertAccdiv
 // ============================================================================
-DLLAPI void InsertAccdiv(ACCDIV *zAccdiv, ERRSTRUCT *pzErr) {
+void InsertAccdiv(ACCDIV *zAccdiv, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -224,7 +224,7 @@ DLLAPI void InsertAccdiv(ACCDIV *zAccdiv, ERRSTRUCT *pzErr) {
 // ============================================================================
 // UpdateAccdiv
 // ============================================================================
-DLLAPI void UpdateAccdiv(ACCDIV *zAccdiv, ERRSTRUCT *pzErr) {
+void UpdateAccdiv(ACCDIV *zAccdiv, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -265,7 +265,7 @@ DLLAPI void UpdateAccdiv(ACCDIV *zAccdiv, ERRSTRUCT *pzErr) {
 // ============================================================================
 // InsertDivhist
 // ============================================================================
-DLLAPI void InsertDivhist(DIVHIST *zDH, ERRSTRUCT *pzErr) {
+void InsertDivhist(DIVHIST *zDH, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -308,8 +308,8 @@ DLLAPI void InsertDivhist(DIVHIST *zDH, ERRSTRUCT *pzErr) {
 // ============================================================================
 // UpdateDivhist
 // ============================================================================
-DLLAPI void UpdateDivhist(int iID, long lDivintNo, long lTransNo, double fUnits,
-                          long lExDate, long lPayDate, ERRSTRUCT *pzErr) {
+void UpdateDivhist(int iID, long lDivintNo, long lTransNo, double fUnits,
+                   long lExDate, long lPayDate, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -342,8 +342,7 @@ DLLAPI void UpdateDivhist(int iID, long lDivintNo, long lTransNo, double fUnits,
 // ============================================================================
 // DeleteDivhist
 // ============================================================================
-DLLAPI void DeleteDivhist(int iID, long lDivintNo, long lTransNo,
-                          ERRSTRUCT *pzErr) {
+void DeleteDivhist(int iID, long lDivintNo, long lTransNo, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -367,7 +366,7 @@ DLLAPI void DeleteDivhist(int iID, long lDivintNo, long lTransNo,
 // ============================================================================
 // DeleteFWTrans
 // ============================================================================
-DLLAPI void DeleteFWTrans(int iID, ERRSTRUCT *pzErr) {
+void DeleteFWTrans(int iID, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -389,7 +388,7 @@ DLLAPI void DeleteFWTrans(int iID, ERRSTRUCT *pzErr) {
 // ============================================================================
 // InsertFWTrans
 // ============================================================================
-DLLAPI void InsertFWTrans(FWTRANS *zFWTrans, ERRSTRUCT *pzErr) {
+void InsertFWTrans(FWTRANS *zFWTrans, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;
@@ -485,10 +484,10 @@ struct DivintUnloadState {
 
 static DivintUnloadState g_divintUnloadState;
 
-DLLAPI void DivintUnload(DILIBSTRUCT *pzDL, long lStartExDate, long lEndExDate,
-                         char *sMode, char *sType, int iID, int iEndId,
-                         char *sSecNo, char *sWi, char *sSecXtend,
-                         char *sAcctType, long lTransNo, ERRSTRUCT *pzErr) {
+void DivintUnload(DILIBSTRUCT *pzDL, long lStartExDate, long lEndExDate,
+                  char *sMode, char *sType, int iID, int iEndId, char *sSecNo,
+                  char *sWi, char *sSecXtend, char *sAcctType, long lTransNo,
+                  ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
   if (!gConn.connected())
     return;

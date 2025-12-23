@@ -821,7 +821,7 @@ ERRSTRUCT ValueHoldings(PARTPMAIN zPmain, long lPriceDate, double fBaseXrate, SE
 				fPrice = zTempHold.fOrigCost / (zTempHold.fUnits * zTempPrice.fTradUnit);
 				lStlDate = zTempHold.lStlDate;
 				zTempHold.fOrigYield = -999;// NAVALUE;
-				zTempHold.fOrigYield = lpfnCalculateYield(fPrice, zTempHold.sSecNo, zTempHold.sWi, "C", lStlDate, 2);
+				zTempHold.fOrigYield = lpfnCalculateYield(fPrice, zTempHold.sSecNo, zTempHold.sWi, const_cast<char*>("C"), lStlDate, 2);
 				// if function fails to calculate the yield
 				if (zTempHold.fOrigYield < 0)
 					zTempHold.fOrigYield = 0.0;
@@ -887,7 +887,7 @@ ERRSTRUCT ValueHoldings(PARTPMAIN zPmain, long lPriceDate, double fBaseXrate, SE
 
 				if (bCallYTC == TRUE && !IsValueZero(fPrice, 2))
 				{
-					fYield = lpfnCalculateYield(fPrice, zTempHold.sSecNo, zTempHold.sWi, "C", lStlDate, 2);
+					fYield = lpfnCalculateYield(fPrice, zTempHold.sSecNo, zTempHold.sWi, const_cast<char*>("C"), lStlDate, 2);
 
 					if (fYield > 0)
 					{
@@ -973,7 +973,7 @@ ERRSTRUCT ValueHoldings(PARTPMAIN zPmain, long lPriceDate, double fBaseXrate, SE
 			// currency and security gain/loss
 			CreateTransFromHoldings(zTempHold, &zTrans, lPriceDate, &lSecImpact);
 			zTrans.fOptPrem = 0;
-			zErr.iBusinessError = lpfnCalcGainLoss(zTrans, "C", lSecImpact, 
+			zErr.iBusinessError = lpfnCalcGainLoss(zTrans, const_cast<char*>("C"), lSecImpact, 
 												   zlocSTTable.zSType[zTempPrice.iSTypeIdx].sPrimaryType,
 												   zlocSTTable.zSType[zTempPrice.iSTypeIdx].sSecondaryType,
 												   zPmain.sBaseCurrId, &zTempHold.fCurrencyGl, &zTempHold.fSecurityGl, 
@@ -1132,7 +1132,7 @@ ERRSTRUCT ValueHoldcash(PARTPMAIN zPmain, long lPriceDate, double fBaseXrate,
 		}
 
 		CreateTransFromHoldcash(zTempHcash, &zTrans, lPriceDate, &lSecImpact);
-		zErr.iBusinessError = lpfnCalcGainLoss(zTrans, "C", lSecImpact, 
+		zErr.iBusinessError = lpfnCalcGainLoss(zTrans, const_cast<char*>("C"), lSecImpact, 
 											   zlocSTTable.zSType[zTempPrice.iSTypeIdx].sPrimaryType,
 											   zlocSTTable.zSType[zTempPrice.iSTypeIdx].sSecondaryType,
 											   zPmain.sBaseCurrId, &fCurrGl, &fSecGL, &fSTGL, 
@@ -1651,7 +1651,7 @@ double GetAccruedInterest(const long lPriceDate, HOLDINGS zTempHold, CUSTOMPRICE
 	if (bLastBusinessDay) 
 	{
 		// Read last business day from current pricing date, if any error reading it, return
-		if (lpfnLastBusinessDay(lPriceDate, "USA", "M",&lLastBusinessDay) != 0)
+		if (lpfnLastBusinessDay(lPriceDate, const_cast<char*>("USA"), const_cast<char*>("M"),&lLastBusinessDay) != 0)
 			return 0;
 
 		/*
@@ -1670,7 +1670,7 @@ double GetAccruedInterest(const long lPriceDate, HOLDINGS zTempHold, CUSTOMPRICE
 		** will double count (accrual as well as cash we already got on 9/30/2000), so in this situation,
 		** we need to go back only one day(9/29/2000)
 		*/
-		if (lpfnIsItAMarketHoliday(lPriceDate, "USA") == 1)
+		if (lpfnIsItAMarketHoliday(lPriceDate, const_cast<char*>("USA")) == 1)
 		{
 			// check if security paid interest between last business day + 1 and pricing date
 			bInterestPaid = FALSE;
@@ -1682,11 +1682,11 @@ double GetAccruedInterest(const long lPriceDate, HOLDINGS zTempHold, CUSTOMPRICE
 			}
 
 			// if interest was not paid then get previous business date
-			if (!bInterestPaid && lpfnLastBusinessDay(lLastBusinessDay, "USA", "M",&lLastBusinessDay) != 0)
+			if (!bInterestPaid && lpfnLastBusinessDay(lLastBusinessDay, const_cast<char*>("USA"), const_cast<char*>("M"),&lLastBusinessDay) != 0)
 				return 0;
 		}
 
-		if (lpfnNextBusinessDay(lPriceDate, "USA", "M",&lNextBusinessDay) != 0)
+		if (lpfnNextBusinessDay(lPriceDate, const_cast<char*>("USA"), const_cast<char*>("M"),&lNextBusinessDay) != 0)
 			return 0;
 	}
 	else
@@ -1724,7 +1724,7 @@ double GetAccruedInterestForLastBusinessDay(const long lPriceDate,HOLDINGS zTemp
 	BOOL		bInterestPaid;
 	ERRSTRUCT	zErr;
 
-	if (lpfnLastBusinessDay(lPriceDate, "USA", "M", &lLastBusinessDay) != 0)
+	if (lpfnLastBusinessDay(lPriceDate, const_cast<char*>("USA"), const_cast<char*>("M"), &lLastBusinessDay) != 0)
 		return 0;
 
 	/*
@@ -1743,7 +1743,7 @@ double GetAccruedInterestForLastBusinessDay(const long lPriceDate,HOLDINGS zTemp
 	** will double count (accrual as well as cash we already got on 9/30/2000), so in this situation,
 	** we need to go back only one day(9/29/2000)
 	*/
-	if (lpfnIsItAMarketHoliday(lPriceDate, "USA") == 1)
+	if (lpfnIsItAMarketHoliday(lPriceDate, const_cast<char*>("USA")) == 1)
 	{
 		// check if security paid interest between last business day + 1 and pricing date
 		bInterestPaid = FALSE;
@@ -1755,7 +1755,7 @@ double GetAccruedInterestForLastBusinessDay(const long lPriceDate,HOLDINGS zTemp
 		}
 
 		// if interest was not paid then get previous business date
-		if (!bInterestPaid && lpfnLastBusinessDay(lLastBusinessDay, "USA", "M",&lLastBusinessDay) != 0)
+		if (!bInterestPaid && lpfnLastBusinessDay(lLastBusinessDay, const_cast<char*>("USA"), const_cast<char*>("M"),&lLastBusinessDay) != 0)
 			return 0;
 	}
 
@@ -1999,3 +1999,6 @@ ERRSTRUCT GetTotalUnitsEligibleForDividend(int iID, char *sSecNo, char *sWi, cha
 
 	return zErr;
 }
+
+
+

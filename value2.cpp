@@ -450,7 +450,7 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitializeAccountValuation(long lAsofDate, char 
 		** Valuation is not initialized - valuation result will go into wrong data sets.
 		** Date has to be greater than 0 and the day should not be Saturday or Sunday in order to initialize starsio.dll
 		*/
-		lpfnLastBusinessDay(36867, "USA", "M", &iTemp);
+		lpfnLastBusinessDay(36867, const_cast<char*>("USA"), const_cast<char*>("M"), &iTemp);
 		
 /*		TimerDll = LoadLibrarySafe("Timer.dll");
 		if (TimerDll == NULL)
@@ -476,7 +476,7 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitializeAccountValuation(long lAsofDate, char 
 	} // If routine was not initialized before
 
 	// Initialize starsio for the given alias and asof date
-	lpprStarsIOInit(sDBAlias, "", "", lAsofDate, 0, &zErr);
+	lpprStarsIOInit(sDBAlias, const_cast<char*>(""), const_cast<char*>(""), lAsofDate, 0, &zErr);
 	if (zErr.iSqlError == 0 && zErr.iBusinessError == 0)
 		bInit = TRUE;
 
@@ -903,4 +903,7 @@ void FreeValuation()
 		bInit = FALSE;
 	} 
 } //freeValuation
+
+
+
 

@@ -313,7 +313,7 @@ DLLAPI void STDCALL InsertDTrans(DTRANS *pzDTrans, ERRSTRUCT *pzErr) {
     stmt.bind(p++, &pzDTrans->zT.lNewTransNo);
     stmt.bind(p++, &pzDTrans->zT.lOrigTransNo);
     stmt.bind(p++, &pzDTrans->zT.lBlockTransNo);
-    safe_bind_string(stmt, p, pzDTrans->zT.sXID);
+    stmt.bind(p++, &pzDTrans->zT.iXID);
     stmt.bind(p++, &pzDTrans->zT.lXTransNo);
     safe_bind_string(stmt, p, pzDTrans->zT.sXSecNo);
     safe_bind_string(stmt, p, pzDTrans->zT.sXWi);

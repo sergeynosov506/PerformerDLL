@@ -181,7 +181,7 @@ static void FillPITIPSStruct(nanodbc::result &result, PITIPSSTRUCT *pzPI) {
 // ============================================================================
 // UpdateAmortizeHoldings
 // ============================================================================
-DLLAPI void STDCALL UpdateAmortizeHoldings(HOLDINGS zHD, ERRSTRUCT *pzErr) {
+void STDCALL UpdateAmortizeHoldings(HOLDINGS zHD, ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, sHoldings, 0, 0, 0, "UpdateAmortizeHoldings",
              FALSE);
@@ -246,10 +246,9 @@ DLLAPI void STDCALL UpdateAmortizeHoldings(HOLDINGS zHD, ERRSTRUCT *pzErr) {
 // AmortizeUnload
 // ============================================================================
 
-DLLAPI void STDCALL AmortizeUnload(char *sMode, int iID, char *sSecNo,
-                                   char *sWi, char *sSecXtend, char *sAcctType,
-                                   long lTransNo, AMORTSTRUCT *pzAM,
-                                   ERRSTRUCT *pzErr) {
+void STDCALL AmortizeUnload(char *sMode, int iID, char *sSecNo, char *sWi,
+                            char *sSecXtend, char *sAcctType, long lTransNo,
+                            AMORTSTRUCT *pzAM, ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, "", 0, 0, 0, "AmortizeUnload", FALSE);
 #endif
@@ -346,10 +345,9 @@ DLLAPI void STDCALL AmortizeUnload(char *sMode, int iID, char *sSecNo,
 // PITIPSUnload
 // ============================================================================
 
-DLLAPI void STDCALL PITIPSUnload(char *sMode, long lValDate, int iID,
-                                 char *sSecNo, char *sWi, char *sSecXtend,
-                                 char *sAcctType, long lTransNo,
-                                 PITIPSSTRUCT *pzPI, ERRSTRUCT *pzErr) {
+void STDCALL PITIPSUnload(char *sMode, long lValDate, int iID, char *sSecNo,
+                          char *sWi, char *sSecXtend, char *sAcctType,
+                          long lTransNo, PITIPSSTRUCT *pzPI, ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, "", 0, 0, 0, "PITIPSUnload", FALSE);
 #endif
@@ -455,7 +453,7 @@ DLLAPI void STDCALL PITIPSUnload(char *sMode, long lValDate, int iID,
 // Cleanup (RAII no-ops)
 // ============================================================================
 
-DLLAPI void STDCALL FreeAmortizeIO(void) {
+void STDCALL FreeAmortizeIO(void) {
   // Optional: Explicitly reset static states
   g_amortizeState.result.reset();
   g_amortizeState.cRows = 0;

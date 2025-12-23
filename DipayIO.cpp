@@ -250,13 +250,12 @@ static void FillAccdivStruct(nanodbc::result &result, ACCDIV *pzAccdiv,
 // SelectAllAccdiv
 // ============================================================================
 
-DLLAPI void STDCALL SelectAllAccdiv(ACCDIV *pzAccdiv, int *iSecType,
-                                    double *fTradingUnit, double *fCurExrate,
-                                    double *fCurIncExrate, char *sMode,
-                                    char *sType, int iID, char *sSecNo,
-                                    char *sWi, char *sSecXtend, char *sAcctType,
-                                    long lTransNo, long lEffDate,
-                                    ERRSTRUCT *pzErr) {
+void STDCALL SelectAllAccdiv(ACCDIV *pzAccdiv, int *iSecType,
+                             double *fTradingUnit, double *fCurExrate,
+                             double *fCurIncExrate, char *sMode, char *sType,
+                             int iID, char *sSecNo, char *sWi, char *sSecXtend,
+                             char *sAcctType, long lTransNo, long lEffDate,
+                             ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, "", 0, 0, 0, "SelectAllAccdiv", FALSE);
 #endif
@@ -363,11 +362,10 @@ DLLAPI void STDCALL SelectAllAccdiv(ACCDIV *pzAccdiv, int *iSecType,
 // UpdateAccdivDeleteFlag
 // ============================================================================
 
-DLLAPI void STDCALL UpdateAccdivDeleteFlag(char *sDeleteFlag, int iID,
-                                           char *sSecNo, char *sWi,
-                                           char *sSecXtend, char *sAcctType,
-                                           long lTransNo, long lDivintNo,
-                                           ERRSTRUCT *pzErr) {
+void STDCALL UpdateAccdivDeleteFlag(char *sDeleteFlag, int iID, char *sSecNo,
+                                    char *sWi, char *sSecXtend, char *sAcctType,
+                                    long lTransNo, long lDivintNo,
+                                    ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, "", 0, 0, 0, "UpdateAccdivDeleteFlag", FALSE);
 #endif
@@ -411,8 +409,8 @@ DLLAPI void STDCALL UpdateAccdivDeleteFlag(char *sDeleteFlag, int iID,
 // SelectPorttax
 // ============================================================================
 
-DLLAPI void STDCALL SelectPorttax(int iID, long lTaxDate, PORTTAX *pzPTax,
-                                  ERRSTRUCT *pzErr) {
+void STDCALL SelectPorttax(int iID, long lTaxDate, PORTTAX *pzPTax,
+                           ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, "", 0, 0, 0, "SelectPorttax", FALSE);
 #endif
@@ -468,7 +466,7 @@ DLLAPI void STDCALL SelectPorttax(int iID, long lTaxDate, PORTTAX *pzPTax,
 // SelectWithrclm
 // ============================================================================
 
-DLLAPI void STDCALL SelectWithrclm(WITHHOLDRCLM *pzWH, ERRSTRUCT *pzErr) {
+void STDCALL SelectWithrclm(WITHHOLDRCLM *pzWH, ERRSTRUCT *pzErr) {
 #ifdef DEBUG
   PrintError("Entering", 0, 0, "", 0, 0, 0, "SelectWithrclm", FALSE);
 #endif
@@ -530,7 +528,7 @@ DLLAPI void STDCALL SelectWithrclm(WITHHOLDRCLM *pzWH, ERRSTRUCT *pzErr) {
 // Initialization and Cleanup
 // ============================================================================
 
-DLLAPI ERRSTRUCT STDCALL InitializeDivIntPayIO(char *sMode, char *sType) {
+ERRSTRUCT STDCALL InitializeDivIntPayIO(char *sMode, char *sType) {
   ERRSTRUCT zErr;
   InitializeErrStruct(&zErr);
 
@@ -558,7 +556,7 @@ void CloseDivIntPayIO(void) {
 #endif
 }
 
-DLLAPI void STDCALL FreeDivIntPayIO(void) {
+void STDCALL FreeDivIntPayIO(void) {
   // Delegate to CloseDivIntPayIO
   CloseDivIntPayIO();
 
