@@ -7,6 +7,36 @@ namespace PerformerDLL.Interop.Common;
 /// Maps to ERRSTRUCT in C++ code.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct NativeERRSTRUCT
+{
+    public int iID;
+    public int lRecNo;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+    public string sRecType;
+    public int iBusinessError;
+    public int iSqlError;
+    public int iIsamCode;
+
+    public readonly bool IsSuccess => iSqlError == 0;
+
+    public ERRSTRUCT ToLegacy()
+    {
+        return new ERRSTRUCT
+        {
+            iSqlError = iSqlError,
+            iErrorCode = iBusinessError,
+            sErrorMessage = $"Native Error: ID={iID}, RecNo={lRecNo}, Type={sRecType}, Isam={iIsamCode}",
+            sFunctionName = "NativeCall",
+            iLineNumber = 0
+        };
+    }
+}
+
+/// <summary>
+/// Error structure returned by most native DLL functions.
+/// Maps to ERRSTRUCT in C++ code.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct ERRSTRUCT
 {
     public int iSqlError;

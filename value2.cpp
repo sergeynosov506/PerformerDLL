@@ -2,7 +2,7 @@
 
 HINSTANCE hOledbIODll, hTransEngineDll, hGainLossDll, hDelphiCInterfaceDll,
     hStarsUtilsDll; //, TimerDll;
-static BOOL bInit = FALSE;
+BOOL bInit = FALSE;
 
 extern "C" {
 DLLAPI ERRSTRUCT STDCALL WINAPI InitializeAccountValuation(long lAsofDate,

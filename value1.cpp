@@ -54,7 +54,14 @@ DLLAPI ERRSTRUCT STDCALL WINAPI AccountValuation(char *sMode, int iID,
   PRICETABLE zPTable;
   CUSTOMPRICETABLE zCPTable;
 
+  if (!bInit) {
+    memset(&zErr, 0, sizeof(ERRSTRUCT));
+    zErr.iSqlError = -1;
+    return zErr;
+  }
+
   lpprInitializeErrStruct(&zErr);
+
   zPmain.iID = 0;
 
   /*

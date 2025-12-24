@@ -35,8 +35,9 @@ public static class Roll
     /// <param name="password">Password (null for Windows auth)</param>
     /// <param name="logFile">Path to log file</param>
     /// <returns>Error structure</returns>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT InitRoll(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT InitRoll(
+        int lAsOfDate,
         [MarshalAs(UnmanagedType.LPStr)] string server,
         [MarshalAs(UnmanagedType.LPStr)] string database,
         [MarshalAs(UnmanagedType.LPStr)] string? username,
@@ -70,8 +71,8 @@ public static class Roll
     /// 4. Creates end-of-period snapshots
     /// 5. Updates rollup tables
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT RollPortfolio(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT RollPortfolio(
         int iID,
         [MarshalAs(UnmanagedType.LPStr)] string acctNo,
         [MarshalAs(UnmanagedType.LPStr)] string acctType,
@@ -98,8 +99,8 @@ public static class Roll
     /// This function automatically determines the starting date from the portfolio's
     /// last roll date and rolls forward to the specified date.
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT RollFromCurrent(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT RollFromCurrent(
         int iID,
         [MarshalAs(UnmanagedType.LPStr)] string acctNo,
         int toDate,
@@ -119,8 +120,8 @@ public static class Roll
     /// WARNING: This operation can be time-consuming for portfolios with long histories.
     /// It processes all transactions from the portfolio inception date.
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT RollFromInception(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT RollFromInception(
         int iID,
         int toDate,
         int createSnapshots,
@@ -140,12 +141,15 @@ public static class Roll
     /// - Update cash balances
     /// - Finalize cost basis calculations
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT SettlementRoll(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT SettlementRoll(
         int iID,
         [MarshalAs(UnmanagedType.LPStr)] string acctNo,
         int settlementDate,
         int verbose);
+
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern void FreeRoll();
 
     #endregion
 
@@ -154,7 +158,7 @@ public static class Roll
     /// <summary>
     /// Safely executes a roll operation with comprehensive error handling.
     /// </summary>
-    public static void SafeRoll(Func<ERRSTRUCT> rollOperation, string operationName)
+    public static void SafeRoll(Func<NativeERRSTRUCT> rollOperation, string operationName)
     {
         try
         {
@@ -162,9 +166,10 @@ public static class Roll
             
             if (!result.IsSuccess)
             {
+                var legacyErr = result.ToLegacy();
                 throw new NativeInteropException(
-                    $"Roll.{operationName} failed: {result.FormatError()}",
-                    result);
+                    $"Roll.{operationName} failed: {legacyErr.FormatError()}",
+                    legacyErr);
             }
         }
         catch (DllNotFoundException)
@@ -204,7 +209,7 @@ public static class Roll
                     1, // Create snapshots
                     verbose ? 1 : 0);
                 
-                results.Add((accountId, result));
+                results.Add((accountId, result.ToLegacy()));
             }
             catch (Exception ex)
             {

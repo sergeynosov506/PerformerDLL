@@ -19,7 +19,6 @@
 #include "syssettings.h"
 #include "trans.h"
 
-
 #define EXTRAPRICE 100
 #define EXTRACUSTOMPRICE 10
 #define EXTRAHXREF 10
@@ -33,6 +32,7 @@ extern "C" {
 
 static long lStarsTrdDate = 0;
 static long lStarsPricingDate = 0;
+extern BOOL bInit;
 
 // extra fields which are not part of portbal record but are required
 // to calculate some of the fields in portbal. These are calculated

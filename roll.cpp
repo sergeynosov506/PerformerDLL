@@ -329,6 +329,23 @@ DLLAPI ERRSTRUCT STDCALL WINAPI RollFromCurrent(int iID, char *sAlphaFlag,
   int iAccntProcessed;
   short iMDY[3];
 
+  if (!bInit) {
+    FILE *f = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+    if (f) {
+      fprintf(f, "RollFromCurrent: bInit is FALSE. Returning error.\n");
+      fclose(f);
+    }
+    memset(&zErr, 0, sizeof(ERRSTRUCT));
+    zErr.iSqlError = -1;
+    return zErr;
+  }
+
+  FILE *f = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+  if (f) {
+    fprintf(f, "RollFromCurrent: bInit is TRUE.\n");
+    fclose(f);
+  }
+
   lpprInitializeErrStruct(&zErr);
   lDestDate = lSrceDate = lTempLong = lTransStartDate = lTransEndDate = 0;
   strcpy_s(sSecNo, "");
@@ -1789,7 +1806,8 @@ ERRSTRUCT AccntDestInit(int iID, char *sSecNo, char *sWi, long lSrcDate,
   */
   if (bDestInit) {
     if (lLastDest != lDestDate || bLastSecSpecific != bSecSpecific)
-      lpfnUnprepareRollQueries(const_cast<char*>(""), UNPREP_ACCNTDESTINATIONQUERIES);
+      lpfnUnprepareRollQueries(const_cast<char *>(""),
+                               UNPREP_ACCNTDESTINATIONQUERIES);
 
     bDestInit = FALSE;
   }
@@ -1927,7 +1945,8 @@ ERRSTRUCT AccntDestInit(int iID, char *sSecNo, char *sWi, long lSrcDate,
   if (bSrceInit) {
     if (lLastSrce != lSrcDate || lLastDest != lDestDate ||
         bLastSpecificSecNo != bSecSpecific)
-      lpfnUnprepareRollQueries(const_cast<char*>(""), UNPREP_ACCNTSOURCEQUERIES);
+      lpfnUnprepareRollQueries(const_cast<char *>(""),
+                               UNPREP_ACCNTSOURCEQUERIES);
 
     bSrceInit = FALSE;
   } // if souce has been initialized
@@ -2571,6 +2590,11 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
                 }*/
 
     bInit = TRUE;
+    FILE *f = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+    if (f) {
+      fprintf(f, "InitRoll: Setting bInit to TRUE.\n");
+      fclose(f);
+    }
   } // If never initialized before
 
   zErr = CallInitTranProc(lAsofDate, sDBPath, sMode, sType, sErrFile);
@@ -3514,6 +3538,12 @@ ERRSTRUCT CreateFSecBrAcctCursor(char *sSecNo, char *sWi, long lRollDate,
 } /* CreateFSecBrAcctCursor */
 
 void FreeRoll() {
+  FILE *f = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+  if (f) {
+    fprintf(f, "FreeRoll: Setting bInit to FALSE.\n");
+    fclose(f);
+  }
+  bInit = FALSE;
   FreeLibrary(hTEngineDll);
   FreeLibrary(hOledbIODll);
   FreeLibrary(hStarsUtilsDll);

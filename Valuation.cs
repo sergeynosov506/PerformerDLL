@@ -37,8 +37,8 @@ public static class Valuation
     /// This function must be called before any valuation operations.
     /// It initializes the database connection and loads required reference data.
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT InitializeAccountValuation(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT InitializeAccountValuation(
         int asofDate,
         [MarshalAs(UnmanagedType.LPStr)] string dbAlias,
         [MarshalAs(UnmanagedType.LPStr)] string errorFile);
@@ -70,8 +70,8 @@ public static class Valuation
     /// Partial valuation is typically used for performance calculations where
     /// only market values are needed without detailed accrual breakdowns.
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT AccountValuation(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT AccountValuation(
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         int accountId,
         int priceDate,
@@ -84,7 +84,7 @@ public static class Valuation
     /// <summary>
     /// Safely executes a valuation operation with comprehensive error handling.
     /// </summary>
-    public static void SafeValuation(Func<ERRSTRUCT> valuationOperation, string operationName)
+    public static void SafeValuation(Func<NativeERRSTRUCT> valuationOperation, string operationName)
     {
         try
         {
@@ -92,9 +92,10 @@ public static class Valuation
             
             if (!result.IsSuccess)
             {
+                var legacyErr = result.ToLegacy();
                 throw new NativeInteropException(
-                    $"Valuation.{operationName} failed: {result.FormatError()}",
-                    result);
+                    $"Valuation.{operationName} failed: {legacyErr.FormatError()}",
+                    legacyErr);
             }
         }
         catch (DllNotFoundException)
