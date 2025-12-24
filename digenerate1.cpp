@@ -37,6 +37,8 @@ BOOL APIENTRY DllMain(HANDLE hDLL, DWORD dwReason, LPVOID lpReserved) {
 
 } // DllMain
 
+extern "C" {
+
 ERRSTRUCT STDCALL WINAPI GenerateDivInt(long lValDate, const char *sMode,
                                         const char *sType, int iID,
                                         const char *sSecNo, const char *sWi,
@@ -91,9 +93,10 @@ ERRSTRUCT STDCALL WINAPI GenerateDivInt(long lValDate, const char *sMode,
 
   // Call the function which does actual work, Added lForwardDate to do Forward
   // Transactions
-  zErr = DivintGeneration(zPmainTable, zPInfoTable, sSecNo, sWi, sSecXtend,
-                          sAcctType, lTransNo, lStartDate, lValDate,
-                          lForwardDate, sMode, sType, zSATable, zCTable);
+  zErr = DivintGeneration(zPmainTable, zPInfoTable, (char *)sSecNo, (char *)sWi,
+                          (char *)sSecXtend, (char *)sAcctType, lTransNo,
+                          lStartDate, lValDate, lForwardDate, (char *)sMode,
+                          (char *)sType, zSATable, zCTable);
 
   // Free up the memory
   InitializePInfoTable(&zPInfoTable);
@@ -1955,3 +1958,4 @@ int FindCurrIdInCurrencyTable(CURRTABLE zCTable, char *sCurrId) {
   return iIndex;
 
 } /* findCurrIdInCurrencyTable */
+} // extern "C"

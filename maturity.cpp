@@ -21,6 +21,8 @@ memory,deprecated string function  - sergeyn
 
 #include "payments.h"
 
+extern "C" {
+
 /**
 ** Function that does the main processing of generating maturity
 **/
@@ -80,8 +82,9 @@ ERRSTRUCT STDCALL WINAPI GenerateMaturity(long lValDate, const char *sMode,
   }
 
   // Added lForwardDate for forward transactions
-  zErr = MaturityGeneration(zPmainTable, zPInfoTable, zSATable, zCTable, sMode,
-                            sSecNo, sWi, sSecXtend, sAcctType,
+  zErr = MaturityGeneration(zPmainTable, zPInfoTable, zSATable, zCTable,
+                            (char *)sMode, (char *)sSecNo, (char *)sWi,
+                            (char *)sSecXtend, (char *)sAcctType,
                             lValDate - zSysSet.zSyssetng.iPaymentsStartDate,
                             lValDate, lValDate + FORWARDDAYS);
 
@@ -817,3 +820,4 @@ int FindSecType(SECTYPETABLE zSTypeTable, int iSType) {
 
   return iIndex;
 } /* FindSecType */
+} // extern "C"

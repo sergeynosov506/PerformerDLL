@@ -49,6 +49,7 @@ BOOL APIENTRY DllMain(HANDLE hDLL, DWORD dwReason, LPVOID lpReserved) {
 ** Function to calculate security, currency, short term and long term
 ** gain & loss for a security
 *F*/
+extern "C" {
 int STDCALL WINAPI CalcGainLoss(TRANS zTR, char *sTranCode, long lSecImpact,
                                 char *sPrimaryType, char *sSecondaryType,
                                 char *sBaseCurrency, double *pzCGL,
@@ -105,11 +106,10 @@ int STDCALL WINAPI CalcGainLoss(TRANS zTR, char *sTranCode, long lSecImpact,
     // if (strcmp(zTR.sDrCr, "DR") == 0)
     *pzTotGL = *pzSGL =
         -1 * lSecImpact *
-        (zTR.fPcplAmt /
-         zTR.fBaseXrate); // * zTR.fSecBaseXrate/ zTR.fBaseOpenXrate;
-                          // else
+        (zTR.fPcplAmt / zTR.fBaseXrate); // * zTR.fSecBaseXrate/
+                                         // zTR.fBaseOpenXrate; else
     //	*pzTotGL = *pzSGL = (zTR.fPcplAmt / zTR.fBaseXrate) * zTR.fSecBaseXrate/
-    //zTR.fBaseOpenXrate;
+    // zTR.fBaseOpenXrate;
   } // Forward contract
   else if (lSecImpact == 1) {
     // Total Gain Loss = totcost/basexrate - (pcplamt/basexrate)*secbasexrate -
@@ -208,6 +208,7 @@ int STDCALL WINAPI CalcGainLoss(TRANS zTR, char *sTranCode, long lSecImpact,
   }*/
 
   return 0;
+}
 }
 
 /*F*
@@ -394,6 +395,7 @@ void STLTGainLoss(TRANS zTR, double *pzSGL, double *pzSTGL, double *pzLTGL,
 /*F*
 ** Function to calculate market discount
 *F*/
+extern "C" {
 int STDCALL WINAPI CalcMarketDiscount(TRANS zTR, long lIssueDate,
                                       long lMaturityDate,
                                       double fRedemptionPrice, double fTradUnit,
@@ -477,6 +479,7 @@ int STDCALL WINAPI CalcMarketDiscount(TRANS zTR, long lIssueDate,
 
   return 0;
 } // CalcMarketDiscount
+}
 
 /* CalcMarketDiscountConstantYield = _CalcMarketDiscountConstantYield@604
 DLLAPI int STDCALL WINAPI CalcMarketDiscountConstantYield(TRANS zTR, double

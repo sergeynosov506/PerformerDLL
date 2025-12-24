@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
+      "projectUniqueName": "E:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
       "projectName": "PerformerDLL.Interop",
-      "projectPath": "e:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
+      "projectPath": "E:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
       "packagesPath": "C:\\Users\\Sergey\\.nuget\\packages\\",
-      "outputPath": "e:\\projects\\PerformerDLL\\Source\\obj\\",
+      "outputPath": "E:\\projects\\PerformerDLL\\Source\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,7 +51,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -67,26 +67,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

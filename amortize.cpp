@@ -24,6 +24,8 @@
 #include "paydll.h"
 #include "stdio.h"
 
+extern "C" {
+
 /*F*
 ** Function called by the user to do amortization processing. Valid Modes are
 ** B(batch), A(single account) and S(single security in an account).
@@ -568,8 +570,9 @@ ERRSTRUCT AmortUnloadAndSort(long lValDate) {
 ** by '|' character. Write now, this function works only for a single account,
 ** it later may be extended to accept a list of accounts.
 *F*/
-ERRSTRUCT BuildAmortTable(char *sMode, char *sFileName, int iID, char *sSecNo,
-                          char *sWi, char *sSecXtend, char *sAcctType,
+ERRSTRUCT BuildAmortTable(const char *sMode, const char *sFileName, int iID,
+                          const char *sSecNo, const char *sWi,
+                          const char *sSecXtend, const char *sAcctType,
                           long lTransNo, AMORTTABLE *pzATable) {
   ERRSTRUCT zErr;
   AMORTSTRUCT zTempAmort;
@@ -947,4 +950,4 @@ void InitializeHoldingsStruct(HOLDINGS *pzHoldings) {
   pzHoldings->fCollateralUnits = pzHoldings->fHedgeValue = 0;
   pzHoldings->sBenchmarkSecNo[0] = pzHoldings->sPermLtFlag[0] = '\0';
   pzHoldings->sValuationSrce[0] = pzHoldings->sPrimaryType[0] = '\0';
-}
+}}

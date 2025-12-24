@@ -189,6 +189,10 @@ extern WITHRECLTABLE zWRTable;
 extern TRANTYPE zTTypeAMDr, zTTypeAMCr;
 extern SYSTEM_SETTINGS zSysSet;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Prototype of functions defined in amortize.c
 ERRSTRUCT STDCALL WINAPI Amortize(long lValDate, const char *sMode,
                                   const char *sProcessFlag, int iID,
@@ -236,11 +240,10 @@ ERRSTRUCT BuildDITable(const char *sMode, const char *sType,
                        DILIBTABLE *pzDITable);
 ERRSTRUCT AddRecordToDILibTable(DILIBTABLE *pzDITab, DILIBSTRUCT zDILStruct);
 ERRSTRUCT DivintGeneration(PORTTABLE zPdirTable, PINFOTABLE zPInfoTable,
-                           const char *sSecNo, const char *sWi,
-                           const char *sSecXtend, const char *sAcctType,
-                           long lTransNo, long lStartDate, long lValdate,
-                           long iForwardDate, const char *sMode,
-                           const char *sType, SUBACCTTABLE zSTable,
+                           char *sSecNo, char *sWi, char *sSecXtend,
+                           char *sAcctType, long lTransNo, long lStartDate,
+                           long lValdate, long iForwardDate, char *sMode,
+                           char *sType, SUBACCTTABLE zSTable,
                            CURRTABLE zCTable);
 ERRSTRUCT CalculateTotals(DILIBSTRUCT *pzDILS, double *pfTotalUnits,
                           double *pzNewTotUnits, double *pfTotalIncome,
@@ -347,17 +350,15 @@ ERRSTRUCT STDCALL WINAPI GenerateMaturity(long lValDate, const char *sMode,
                                           const char *sAcctType);
 ERRSTRUCT MaturityGeneration(PORTTABLE zPmainTable, PINFOTABLE zPInfoTable,
                              SUBACCTTABLE zSTable, CURRTABLE zCTable,
-                             const char *sMode, const char *sSecNo,
-                             const char *sWi, const char *sSecXtend,
-                             const char *sAcctType, long lStartDate,
+                             char *sMode, char *sSecNo, char *sWi,
+                             char *sSecXtend, char *sAcctType, long lStartDate,
                              long lValDate, long lForwardDate);
 void InitializeMatStruct(MATSTRUCT *pzMStruct);
 void InitializeMatTable(MATTABLE *pzMTable);
 ERRSTRUCT BuildSecTypeTable(SECTYPETABLE *pzSTable);
 ERRSTRUCT MaturityUnloadAndSort(long lValDate, long lStartDate);
-ERRSTRUCT BuildMatTable(const char *sMode, const char *sFileName, int iID,
-                        const char *sSecNo, const char *sWi,
-                        const char *sSecXtend, const char *sAcctType,
+ERRSTRUCT BuildMatTable(char *sMode, char *sFileName, int iID, char *sSecNo,
+                        char *sWi, char *sSecXtend, char *sAcctType,
                         long lStartDate, long lvalDate, long lStartingPosition,
                         MATTABLE *pzMatTable);
 ERRSTRUCT AddRecordToMatTable(MATTABLE *pzMTab, MATSTRUCT zMatStruct);
@@ -367,3 +368,7 @@ ERRSTRUCT CreateTransAndCallTranAlloc(MATSTRUCT zMat, double fUnits,
                                       char *sIncAcctType, long lValDate);
 ERRSTRUCT CreateAndInsertFWTrans(TRANS zTrans, const char PayType[]);
 int FindSecType(SECTYPETABLE zSTypeTable, int iSType);
+
+#ifdef __cplusplus
+}
+#endif

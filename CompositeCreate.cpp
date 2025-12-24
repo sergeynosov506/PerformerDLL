@@ -41,6 +41,8 @@ BOOL APIENTRY DllMain(HANDLE hDLL, DWORD dwReason, LPVOID lpReserved) {
   return TRUE;
 } // DllMain
 
+extern "C" {
+
 /**
 **This routine creates compsite for holdings and hold cash,given the Composite
 * ID
@@ -1775,3 +1777,5 @@ void FreeCompositeCreateLibrary() {
     bCompCreateInit = FALSE;
   }
 } // FreeCompositeCreateLibrary
+
+} // extern "C"

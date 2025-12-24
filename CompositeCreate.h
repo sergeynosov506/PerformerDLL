@@ -31,7 +31,6 @@ ker: jbg $
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #include "CreateHoldtot.h"
 #include "HashPerf.h"
 #include "commonheader.h"
@@ -133,6 +132,10 @@ LPPRSUMMARIZEMONTHSUM lpprSummarizeMonthsum;
 LPPRSUMMARIZEINCEPTIONSUMMDATA lpprSummarizeInceptionSummdata;
 LPPRSUBTRACTINCEPTIONSUMMDATA lpprSubtractInceptionSummdata;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Exported Functions*/
 void STDCALL WINAPI CreateComposite(int iOwnerID, long lDate,
                                     int iPortfolioType, long iHoldingsFlag,
@@ -164,5 +167,9 @@ int FindHoldCashKey(HOLDCASHTABLE *pHoldCashTable, HOLDCASHKEY zHoldCashKey);
 void InitializeHoldingsTable(HOLDTABLE *pHoldingsTable);
 void InitializeHoldcashTable(HOLDCASHTABLE *pHoldcashTable);
 void FreeCompositeCreateLibrary();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

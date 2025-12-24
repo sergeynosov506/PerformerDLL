@@ -28,10 +28,14 @@
 #include "commonheader.h"
 #include "trans.h"
 
+extern "C" {
 ERRSTRUCT STDCALL WINAPI CalculateNetFlow(TRANS zTR, char *sPerfImpact,
                                           FLOWCALCSTRUCT *pzNFCS);
-ERRSTRUCT STDCALL WINAPI CalculateNetFlow(TRANS zTR, char *sPerfImpact,
-                                          FLOWCALCSTRUCT *pzNFCS, bool bPerf);
+ERRSTRUCT STDCALL WINAPI CalculateNetFlowPerf(TRANS zTR, char *sPerfImpact,
+                                              FLOWCALCSTRUCT *pzNFCS,
+                                              bool bPerf);
+int STDCALL WINAPI InitCalcFlow(char *sErrFile);
+}
 void FreeCalcFlow();
 
 LPFNPRINTERROR lpfnPrintError;
@@ -63,11 +67,12 @@ BOOL APIENTRY DllMain(HANDLE hDLL, DWORD dwReason, LPVOID lpReserved) {
 
 ERRSTRUCT STDCALL WINAPI CalculateNetFlow(TRANS zTR, char *sPerfImpact,
                                           FLOWCALCSTRUCT *pzNFCS) {
-  return CalculateNetFlow(zTR, sPerfImpact, pzNFCS, false);
+  return CalculateNetFlowPerf(zTR, sPerfImpact, pzNFCS, false);
 }
 
-ERRSTRUCT STDCALL WINAPI CalculateNetFlow(TRANS zTR, char *sPerfImpact,
-                                          FLOWCALCSTRUCT *pzNFCS, bool bPerf) {
+ERRSTRUCT STDCALL WINAPI CalculateNetFlowPerf(TRANS zTR, char *sPerfImpact,
+                                              FLOWCALCSTRUCT *pzNFCS,
+                                              bool bPerf) {
   ERRSTRUCT zErr;
 
   lpprInitializeErrStruct(&zErr);

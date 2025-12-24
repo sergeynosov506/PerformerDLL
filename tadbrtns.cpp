@@ -29,7 +29,7 @@
 /**
 ** Function to initialize Portmain structure defined in portdir.h file
 **/
-void STDCALL InitializePortmainStruct(PORTMAIN *pzPortmain) {
+extern "C" void STDCALL InitializePortmainStruct(PORTMAIN *pzPortmain) {
   pzPortmain->iID = 0;
   sprintf_s(pzPortmain->sUniqueName, "%-*s",
             (int)(sizeof(pzPortmain->sUniqueName) - 1), "");
