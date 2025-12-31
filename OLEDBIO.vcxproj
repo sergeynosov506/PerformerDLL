@@ -123,6 +123,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>OLEDBIO.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -168,6 +169,8 @@
     <ClInclude Include="PerformanceIO_Summdata.h" />
     <ClInclude Include="PerformanceIO_Taxperf.h" />
     <ClInclude Include="PerformanceIO_UnitValue.h" />
+    <ClInclude Include="TransIO_Income.h" />
+    <ClInclude Include="RollIO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AmortizeIO.cpp" />
@@ -187,6 +190,7 @@
     <ClCompile Include="nanodbc\variant_row_cached_result.cpp" />
     <ClCompile Include="OLEDBIO.cpp" />
     <ClCompile Include="OLEDBIOCommon.cpp" />
+    <ClCompile Include="OLEDBIO_test.cpp" />
     <ClCompile Include="PerformanceIO_Common.cpp" />
     <ClCompile Include="PerformanceIO_DSumdata.cpp" />
     <ClCompile Include="PerformanceIO_Hkeyrltn.cpp" />
@@ -220,6 +224,7 @@
     <ClCompile Include="TransIO_Holddel.cpp" />
     <ClCompile Include="TransIO_Holdings.cpp" />
     <ClCompile Include="TransIO_Holdmap.cpp" />
+    <ClCompile Include="TransIO_Income.cpp" />
     <ClCompile Include="TransIO_Login.cpp" />
     <ClCompile Include="TransIO_Payrec.cpp" />
     <ClCompile Include="TransIO_Portlock.cpp" />
@@ -240,6 +245,8 @@
     <ClCompile Include="ValuationIO_Payrec.cpp" />
     <ClCompile Include="ValuationIO_Segments.cpp" />
     <ClCompile Include="ValuationIO_Utils.cpp" />
+    <ClCompile Include="RollIO.cpp" />
+    <ClCompile Include="CheckForInflationIndexRatio.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

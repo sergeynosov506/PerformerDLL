@@ -37,121 +37,81 @@ public static class Roll
     /// <returns>Error structure</returns>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern NativeERRSTRUCT InitRoll(
-        int lAsOfDate,
-        [MarshalAs(UnmanagedType.LPStr)] string server,
-        [MarshalAs(UnmanagedType.LPStr)] string database,
-        [MarshalAs(UnmanagedType.LPStr)] string? username,
-        [MarshalAs(UnmanagedType.LPStr)] string? password,
-        [MarshalAs(UnmanagedType.LPStr)] string logFile);
+        [MarshalAs(UnmanagedType.LPStr)] string sDBPath,
+        [MarshalAs(UnmanagedType.LPStr)] string sType,
+        [MarshalAs(UnmanagedType.LPStr)] string sMode,
+        int lAsofDate,
+        [MarshalAs(UnmanagedType.LPStr)] string sErrFile);
 
     #endregion
 
     #region Roll Operations
 
     /// <summary>
-    /// Performs a portfolio roll from one date to another.
+    /// Full Roll function matching DLL signature.
     /// </summary>
     /// <param name="iID">Account ID</param>
-    /// <param name="acctNo">Account number</param>
-    /// <param name="acctType">Account type</param>
-    /// <param name="fromDate">Starting date (YYYYMMDD)</param>
-    /// <param name="toDate">Ending date (YYYYMMDD)</param>
-    /// <param name="description">Roll description</param>
-    /// <param name="userName">User performing the roll</param>
-    /// <param name="calculatePerformance">Whether to calculate performance</param>
-    /// <param name="updateMarketValues">Whether to update market values</param>
-    /// <param name="createSnapshots">Whether to create holdings snapshots</param>
-    /// <param name="verbose">Verbose logging</param>
-    /// <returns>Error structure with results</returns>
-    /// <remarks>
-    /// This is the main portfolio roll function. It:
-    /// 1. Processes all transactions between fromDate and toDate
-    /// 2. Updates holdings and balances
-    /// 3. Calculates performance metrics if requested
-    /// 4. Creates end-of-period snapshots
-    /// 5. Updates rollup tables
-    /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern NativeERRSTRUCT RollPortfolio(
+    /// <param name="alphaId1">Alpha identifier 1 (e.g. sec_no)</param>
+    /// <param name="alphaId2">Alpha identifier 2 (e.g. wi)</param>
+    /// <param name="numericId1">Numeric identifier 1 (e.g. date range start)</param>
+    /// <param name="numericId2">Numeric identifier 2 (e.g. date range end)</param>
+    /// <param name="alphaFlag">Alpha flag (F=firm, B=branch, S=security, C=composite, M=manager)</param>
+    /// <param name="numericFlag">Numeric flag (T=trans, TD=trade date, ED=eff date, ND=entry date)</param>
+    /// <param name="initDataSet">Whether to initialize the dataset</param>
+    /// <param name="whichDataSet">Target dataset (0=auto, 1=roll, 2=perform, 3=settlement)</param>
+    /// <param name="rollDate">Target roll date (YYYYMMDD)</param>
+    /// <param name="resetPerfDate">Performance reset flag (0=no, 1=reset to monthly, 2=reset to holdmap)</param>
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall, EntryPoint = "Roll")]
+    public static extern ERRSTRUCT PerformRoll(
         int iID,
-        [MarshalAs(UnmanagedType.LPStr)] string acctNo,
-        [MarshalAs(UnmanagedType.LPStr)] string acctType,
-        int fromDate,
-        int toDate,
-        [MarshalAs(UnmanagedType.LPStr)] string description,
-        [MarshalAs(UnmanagedType.LPStr)] string userName,
-        int calculatePerformance,
-        int updateMarketValues,
-        int createSnapshots,
-        int verbose);
+        [MarshalAs(UnmanagedType.LPStr)] string alphaId1,
+        [MarshalAs(UnmanagedType.LPStr)] string alphaId2,
+        int numericId1,
+        int numericId2,
+        [MarshalAs(UnmanagedType.LPStr)] string alphaFlag,
+        [MarshalAs(UnmanagedType.LPStr)] string numericFlag,
+        [MarshalAs(UnmanagedType.Bool)] bool initDataSet,
+        int whichDataSet,
+        int rollDate,
+        int resetPerfDate);
 
     /// <summary>
-    /// Rolls a portfolio from its current roll date to the specified date.
+    /// RollFromCurrent function matching DLL signature.
     /// </summary>
-    /// <param name="iID">Account ID</param>
-    /// <param name="acctNo">Account number</param>
-    /// <param name="toDate">Target roll date</param>
-    /// <param name="updateMarketValues">Update market values flag</param>
-    /// <param name="createSnapshots">Create snapshots flag</param>
-    /// <param name="verbose">Verbose logging flag</param>
-    /// <returns>Error structure</returns>
-    /// <remarks>
-    /// This function automatically determines the starting date from the portfolio's
-    /// last roll date and rolls forward to the specified date.
-    /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall, EntryPoint = "RollFromCurrent")]
     public static extern NativeERRSTRUCT RollFromCurrent(
         int iID,
-        [MarshalAs(UnmanagedType.LPStr)] string acctNo,
-        int toDate,
-        int updateMarketValues,
-        int createSnapshots,
-        int verbose);
+        [MarshalAs(UnmanagedType.LPStr)] string alphaFlag,
+        [MarshalAs(UnmanagedType.Bool)] bool initDataSet,
+        int whichDataSet,
+        int rollDate,
+        int resetPerfDate);
 
     /// <summary>
-    /// Rolls a portfolio from inception to the specified date.
+    /// RollFromInception function matching DLL signature.
     /// </summary>
-    /// <param name="iID">Account ID</param>
-    /// <param name="toDate">Target roll date</param>
-    /// <param name="createSnapshots">Create snapshots flag</param>
-    /// <param name="verbose">Verbose logging flag</param>
-    /// <returns>Error structure</returns>
-    /// <remarks>
-    /// WARNING: This operation can be time-consuming for portfolios with long histories.
-    /// It processes all transactions from the portfolio inception date.
-    /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall, EntryPoint = "RollFromInception")]
     public static extern NativeERRSTRUCT RollFromInception(
         int iID,
-        int toDate,
-        int createSnapshots,
-        int verbose);
+        int whichDataSet,
+        int rollDate,
+        int resetPerfDate);
 
     /// <summary>
-    /// Performs a settlement roll to process unsettled trades.
+    /// SettlementRoll function matching DLL signature.
     /// </summary>
-    /// <param name="iID">Account ID</param>
-    /// <param name="acctNo">Account number</param>
-    /// <param name="settlementDate">Settlement date to process</param>
-    /// <param name="verbose">Verbose logging flag</param>
-    /// <returns>Error structure</returns>
-    /// <remarks>
-    /// Settlement rolls are used to:
-    /// - Mark trades as settled on their settlement date
-    /// - Update cash balances
-    /// - Finalize cost basis calculations
-    /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall, EntryPoint = "SettlementRoll")]
     public static extern NativeERRSTRUCT SettlementRoll(
         int iID,
-        [MarshalAs(UnmanagedType.LPStr)] string acctNo,
-        int settlementDate,
-        int verbose);
+        [MarshalAs(UnmanagedType.LPStr)] string alphaFlag,
+        int rollDate,
+        [MarshalAs(UnmanagedType.Bool)] bool doTransaction);
 
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void FreeRoll();
 
     #endregion
+
 
     #region Helper Methods
 
@@ -166,23 +126,22 @@ public static class Roll
             
             if (!result.IsSuccess)
             {
-                var legacyErr = result.ToLegacy();
                 throw new NativeInteropException(
-                    $"Roll.{operationName} failed: {legacyErr.FormatError()}",
-                    legacyErr);
+                    $"Roll.{operationName} failed: {result.FormatError()}",
+                    result);
             }
         }
         catch (DllNotFoundException)
         {
             throw new NativeInteropException(
                 "Roll.dll not found. Ensure it's in the application directory.",
-                new ERRSTRUCT());
+                new NativeERRSTRUCT());
         }
         catch (EntryPointNotFoundException ex)
         {
             throw new NativeInteropException(
                 $"Function '{operationName}' not found in Roll.dll.",
-                new ERRSTRUCT(),
+                new NativeERRSTRUCT(),
                 ex);
         }
     }
@@ -190,12 +149,12 @@ public static class Roll
     /// <summary>
     /// Rolls multiple portfolios in a batch operation.
     /// </summary>
-    public static List<(int AccountId, ERRSTRUCT Result)> BatchRoll(
+    public static List<(int AccountId, NativeERRSTRUCT Result)> BatchRoll(
         IEnumerable<int> accountIds,
         int toDate,
         bool verbose = false)
     {
-        var results = new List<(int, ERRSTRUCT)>();
+        var results = new List<(int, NativeERRSTRUCT)>();
 
         foreach (var accountId in accountIds)
         {
@@ -203,21 +162,20 @@ public static class Roll
             {
                 var result = RollFromCurrent(
                     accountId,
-                    "", // Account number will be looked up
+                    "B", // Alpha flag for Branch account
+                    true, // Initialize dataset
+                    1, // Which dataset (Roll)
                     toDate,
-                    1, // Update market values
-                    1, // Create snapshots
-                    verbose ? 1 : 0);
+                    1); // Reset performance date
                 
-                results.Add((accountId, result.ToLegacy()));
+                results.Add((accountId, result));
             }
             catch (Exception ex)
             {
-                var errorStruct = new ERRSTRUCT
+                var errorStruct = new NativeERRSTRUCT
                 {
                     iSqlError = -1,
-                    sErrorMessage = ex.Message,
-                    sFunctionName = nameof(BatchRoll)
+                    iBusinessError = -1
                 };
                 results.Add((accountId, errorStruct));
             }

@@ -46,6 +46,8 @@ securities that apply  - mk
 
 #include "PaymentsIO.h"
 
+extern BOOL bInit;
+
 typedef void(CALLBACK *LPPRDIVINTUNL)(DILIBSTRUCT *, long, long, const char *,
                                       const char *, int, int, const char *,
                                       const char *, const char *, const char *,

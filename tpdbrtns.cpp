@@ -23,7 +23,7 @@
 // Preparefortranalloc() - yb.
 
 #include "transengine.h"
-HINSTANCE hOledbIODll, hStarsUtilsDll, hGainLossDll, hDelphiCInterfaceDll;
+HINSTANCE hOledbIODll, hStarsUtilsDll, hGainLossDll;
 BOOL bTProcInitialized = FALSE;
 
 /**
@@ -54,13 +54,9 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitTranProc(long lAsofDate, char *sDBAlias,
                          "TPROC INIT1b", FALSE));
     }
 
-    // Try to load the "StarsUtils.dll" dll created in Delphi
-    hStarsUtilsDll = LoadLibrarySafe("StarsUtils.dll");
-    if (hStarsUtilsDll == NULL) {
-      iError = GetLastError();
-      return (PrintError("Unable To Load StarsUtils.dll", 0, 0, "", iError, 0,
-                         0, "TPROC INIT2", FALSE));
-    }
+    /* StarsUtils.dll is 32-bit Delphi. We now use OLEDBIO.dll which contains
+     * 64-bit versions of date functions. */
+    hStarsUtilsDll = NULL;
 
     // Try to load the "CalcGainLoss.dll" dll created in C
     hGainLossDll = LoadLibrarySafe("CalcGainLoss.dll");
@@ -70,13 +66,10 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitTranProc(long lAsofDate, char *sDBAlias,
                          0, "TPROC INIT3", FALSE));
     }
 
-    // Try to load the "DelphiCInterface.dll" dll created in Delphi
-    hDelphiCInterfaceDll = LoadLibrarySafe("DelphiCInterface.dll");
-    if (hDelphiCInterfaceDll == NULL) {
-      iError = GetLastError();
-      return (PrintError("Unable To Load DelphiCInterfaceDll.dll", 0, 0, "",
-                         iError, 0, 0, "TPROC INIT3A", FALSE));
-    }
+    // DelphiCInterface.dll (legacy Delphi) is no longer used.
+    // TIPS inflation calculations are now available in OLEDBIO.dll (C++)
+    lpfnInflationIndexRatio = (LPFN1PCHAR3LONG)GetProcAddress(
+        hOledbIODll, "CheckForInflationIndexRatio");
 
     // lpprStarsIOInit =
     // (LPPR3PCHAR1LONG1BOOL)GetProcAddress(hStarsIODll, "InitializeStarsIO");
@@ -747,14 +740,14 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitTranProc(long lAsofDate, char *sDBAlias,
                          iError, 0, 0, "TPROC INIT66E", FALSE));
     }
 
-    lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hStarsUtilsDll, "rmdyjul");
+    lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hOledbIODll, "rmdyjul");
     if (!lpfnrmdyjul) {
       iError = GetLastError();
       return (PrintError("Unable To Load rmdyjul function", 0, 0, "", iError, 0,
                          0, "TPROC INIT67", FALSE));
     }
 
-    lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hStarsUtilsDll, "rjulmdy");
+    lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hOledbIODll, "rjulmdy");
     if (!lpfnrjulmdy) {
       iError = GetLastError();
       return (PrintError("Unable To Load rjulmdy function", 0, 0, "", iError, 0,
@@ -762,14 +755,14 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitTranProc(long lAsofDate, char *sDBAlias,
     }
 
     lpfnNewDateFromCurrent =
-        (LPFNNEWDATE)GetProcAddress(hStarsUtilsDll, "NewDateFromCurrent");
+        (LPFNNEWDATE)GetProcAddress(hOledbIODll, "NewDateFromCurrent");
     if (!lpfnNewDateFromCurrent) {
       iError = GetLastError();
       return (PrintError("Unable To Load NewDateFromCurrent function", 0, 0, "",
                          iError, 0, 0, "TPROC INIT69", FALSE));
     }
 
-    lpfnrstrdate = (LPFN1PCHAR1PLONG)GetProcAddress(hStarsUtilsDll, "rstrdate");
+    lpfnrstrdate = (LPFN1PCHAR1PLONG)GetProcAddress(hOledbIODll, "rstrdate");
     if (!lpfnrstrdate) {
       iError = GetLastError();
       return (PrintError("Error Loading rstrdate Function", 0, 0, "", iError, 0,
@@ -784,12 +777,20 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitTranProc(long lAsofDate, char *sDBAlias,
                          iError, 0, 0, "TPROC INIT71", FALSE));
     }
 
-    lpfnInflationIndexRatio = (LPFN1PCHAR3LONG)GetProcAddress(
-        hDelphiCInterfaceDll, "CheckForInflationIndexRatio_c");
+    // CheckForInflationIndexRatio is already loaded from OLEDBIO earlier.
+    // If we need to reload or verify, we can use hOledbIODll.
+    // But since we already loaded it in the initial block, we might not need
+    // this. However, to keep flow consistent and safe:
     if (!lpfnInflationIndexRatio) {
-      iError = GetLastError();
-      return (PrintError("Unable To Load CheckForInflationIndexRatio function",
-                         0, 0, "", iError, 0, 0, "TPROC INIT72", FALSE));
+      lpfnInflationIndexRatio = (LPFN1PCHAR3LONG)GetProcAddress(
+          hOledbIODll, "CheckForInflationIndexRatio");
+
+      if (!lpfnInflationIndexRatio) {
+        iError = GetLastError();
+        return (PrintError(
+            "Unable To Load CheckForInflationIndexRatio function from OLEDBIO",
+            0, 0, "", iError, 0, 0, "TPROC INIT72", FALSE));
+      }
     }
 
     /*		TimerDll = LoadLibrarySafe("Timer.dll");
@@ -954,7 +955,7 @@ void FreeTranProc() {
     FreeLibrary(hStarsUtilsDll);
     FreeLibrary(hGainLossDll);
     // FreeLibrary(hStarsIODll);
-    FreeLibrary(hDelphiCInterfaceDll);
+    // FreeLibrary(hDelphiCInterfaceDll);
 
     bTProcInitialized = FALSE;
   }

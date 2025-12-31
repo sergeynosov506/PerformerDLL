@@ -564,20 +564,25 @@ fTradUnit);
 } // CalcMarketDiscountConstantYield*/
 
 BOOL InitializeCalcGainLossLibrary() {
-  hStarsUtilsDll = LoadLibrarySafe("StarsUtils.dll");
-  if (hStarsUtilsDll == NULL)
+  /* StarsUtils.dll is 32-bit Delphi. We now use OLEDBIO.dll which contains
+   * 64-bit versions of date functions. */
+  hStarsUtilsDll = NULL;
+
+  // Load OLEDBIO.dll for date functions
+  HINSTANCE hOledbIODll = LoadLibrarySafe("OLEDBIO.dll");
+  if (hOledbIODll == NULL)
     return FALSE;
 
-  lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hStarsUtilsDll, "rmdyjul");
+  lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hOledbIODll, "rmdyjul");
   if (!lpfnrmdyjul)
     return FALSE;
 
-  lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hStarsUtilsDll, "rjulmdy");
+  lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hOledbIODll, "rjulmdy");
   if (!lpfnrjulmdy)
     return FALSE;
 
   lpfnNewDateFromCurrent =
-      (LPFNNEWDATE)GetProcAddress(hStarsUtilsDll, "NewDateFromCurrent");
+      (LPFNNEWDATE)GetProcAddress(hOledbIODll, "NewDateFromCurrent");
   if (!lpfnNewDateFromCurrent)
     return FALSE;
 

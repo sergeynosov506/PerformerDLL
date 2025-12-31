@@ -2151,23 +2151,37 @@ ERRSTRUCT ReadHoldingsMapForADate(long lDate, char *sHoldings, char *sHoldcash,
 ** Function to initialize roll library. It loads all the dlls and the functions
 ** defined in them that are required anywhere in roll.
 */
+
 DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
                                          char *sMode, long lAsofDate,
                                          char *sErrFile) {
   int iError;
   ERRSTRUCT zErr;
-  //	HINSTANCE		hTEngineDll, hOledbIODll, hStarsUtilsDll;
+  memset(&zErr, 0, sizeof(ERRSTRUCT));
+
   static char sLastAlias[80] = "";
   static long lLastDate = -1;
-  //	static BOOL bInit = FALSE;
 
   if (!bInit) {
+    FILE *fDebug = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Starting initialization (bInit=FALSE)\n");
+    }
+
     // Load "TransEngine" dll created in C
     hTEngineDll = LoadLibrarySafe("TransEngine.dll");
     if (hTEngineDll == NULL) {
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to load TransEngine.dll (Error %d)\n",
+                GetLastError());
+        fclose(fDebug);
+      }
       zErr.iBusinessError = GetLastError();
+      zErr.iSqlError = -1; // Explicitly set it so it's not garbage
       return zErr;
     }
+    if (fDebug)
+      fprintf(fDebug, "InitRoll: Loaded TransEngine.dll\n");
 
     // Load "StarsIO" dll created in Delphi
     // hOledbIODll = LoadLibrarySafe("StarsIO.dll");
@@ -2175,98 +2189,259 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
     // Load "OLEDBIO" dll created in C - debug - vay
     hOledbIODll = LoadLibrarySafe("OLEDBIO.dll");
     if (hOledbIODll == NULL) {
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to load OLEDBIO.dll (Error %d)\n",
+                GetLastError());
+        fclose(fDebug);
+      }
       zErr.iBusinessError = GetLastError();
+      zErr.iSqlError = -1;
       return zErr;
     }
-
-    // Load "StasUtils" dll created in Delphi
-    hStarsUtilsDll = LoadLibrarySafe("StarsUtils.dll");
-    if (hStarsUtilsDll == NULL) {
-      zErr.iBusinessError = GetLastError();
-      return zErr;
+    if (fDebug) {
+      fprintf(
+          fDebug,
+          "InitRoll: Loaded OLEDBIO.dll. Setting hStarsUtilsDll = NULL...\n");
+      fflush(fDebug);
     }
 
-    // Load functions from TransEngine.Dll
+    /* StarsUtils.dll is 32-bit Delphi. We now use OLEDBIO.dll which contains
+     * 64-bit versions of these functions. */
+    hStarsUtilsDll = NULL;
+
+    if (fDebug) {
+      fprintf(fDebug,
+              "InitRoll: hStarsUtilsDll set to NULL. Finding "
+              "InitializeErrStruct (hTEngineDll=%p)...\n",
+              hTEngineDll);
+      fflush(fDebug);
+    }
     lpprInitializeErrStruct =
         (LPPRERRSTRUCT)GetProcAddress(hTEngineDll, "InitializeErrStruct");
     if (!lpprInitializeErrStruct) {
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find InitializeErrStruct\n");
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       zErr.iBusinessError = GetLastError();
+      zErr.iSqlError = -1;
       return zErr;
     }
     lpprInitializeErrStruct(&zErr);
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found InitializeErrStruct.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding InitializePortmainStruct...\n");
+      fflush(fDebug);
+    }
     lpprInitializePortmainStruct = (LPPRPMAINPOINTER)GetProcAddress(
         hTEngineDll, "InitializePortmainStruct");
     if (!lpprInitializePortmainStruct) {
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find InitializePortmainStruct\n");
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       zErr.iBusinessError = GetLastError();
+      zErr.iSqlError = -1;
       return zErr;
     }
-
-    lpfnPrintError = (LPFNPRINTERROR)GetProcAddress(hTEngineDll, "PrintError");
-    if (!lpfnPrintError) {
-      iError = GetLastError();
-      return (lpfnPrintError("Error Loading InitTranProc Function", 0, 0, "",
-                             iError, 0, 0, "ROLL INIT1", FALSE));
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found InitializePortmainStruct.\n");
+      fflush(fDebug);
     }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding PrintError...\n");
+      fflush(fDebug);
+    }
+    lpfnPrintError = (LPFNPRINTERROR)GetProcAddress(hTEngineDll, "PrintError");
+    if (!lpfnPrintError) {
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find PrintError\n");
+        fflush(fDebug);
+        fclose(fDebug);
+      }
+      return zErr;
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found PrintError.\n");
+      fflush(fDebug);
+    }
+
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding InitTranProc...\n");
+      fflush(fDebug);
+    }
     lpfnInitTranProc =
         (LPFN1LONG3PCHAR1BOOL1PCHAR)GetProcAddress(hTEngineDll, "InitTranProc");
     if (!lpfnInitTranProc) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find InitTranProc (Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading InitTranProc Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT2", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found InitTranProc.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding UpdateHold...\n");
+      fflush(fDebug);
+    }
     lpfnUpdateHold = (LPFNUPDATEHOLD)GetProcAddress(hTEngineDll, "UpdateHold");
     if (!lpfnUpdateHold) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find UpdateHold (Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading UpdateHold Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT3", FALSE));
     }
-
-    // Load functions from StarsUtils.dll
-    lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hStarsUtilsDll, "rmdyjul");
-    if (!lpfnrmdyjul) {
-      iError = GetLastError();
-      return (lpfnPrintError("Error Loading rmdyjul Function", 0, 0, "", iError,
-                             0, 0, "ROLL INIT4", FALSE));
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found UpdateHold.\n");
+      fflush(fDebug);
     }
 
-    lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hStarsUtilsDll, "rjulmdy");
+    // Load functions from OLEDBIO.dll (replacing legacy StarsUtils.dll)
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding rmdyjul in OLEDBIO...\n");
+      fflush(fDebug);
+    }
+    lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hOledbIODll, "rmdyjul");
+    if (!lpfnrmdyjul) {
+      iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find rmdyjul in OLEDBIO (Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
+      return (lpfnPrintError("Error Loading rmdyjul Function from OLEDBIO", 0,
+                             0, "", iError, 0, 0, "ROLL INIT4", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found rmdyjul.\n");
+      fflush(fDebug);
+    }
+
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding rjulmdy in OLEDBIO...\n");
+      fflush(fDebug);
+    }
+    lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hOledbIODll, "rjulmdy");
     if (!lpfnrjulmdy) {
       iError = GetLastError();
-      return (lpfnPrintError("Error Loading rjulmdy Function", 0, 0, "", iError,
-                             0, 0, "ROLL INIT5", FALSE));
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find rjulmdy in OLEDBIO (Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
+      return (lpfnPrintError("Error Loading rjulmdy Function from OLEDBIO", 0,
+                             0, "", iError, 0, 0, "ROLL INIT5", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found rjulmdy.\n");
+      fflush(fDebug);
     }
 
     // Load functions from StarsIO.dll
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding StartDBTransaction in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpfnStartDBTransaction =
         (LPFNVOID)GetProcAddress(hOledbIODll, "StartDBTransaction");
     if (!lpfnStartDBTransaction) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find StartDBTransaction in OLEDBIO (Error "
+                "%d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading StartDBTransaction Function", 0, 0,
                              "", iError, 0, 0, "ROLL INIT6", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found StartDBTransaction.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding CommitDBTransaction in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpfnCommitDBTransaction =
         (LPFNVOID)GetProcAddress(hOledbIODll, "CommitDBTransaction");
     if (!lpfnCommitDBTransaction) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find CommitDBTransaction in OLEDBIO "
+                "(Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading CommitDBTransaction Function", 0, 0,
                              "", iError, 0, 0, "ROLL INIT7", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found CommitDBTransaction.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug,
+              "InitRoll: Finding RollbackDBTransaction in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpfnRollbackDBTransaction =
         (LPFNVOID)GetProcAddress(hOledbIODll, "RollbackDBTransaction");
     if (!lpfnRollbackDBTransaction) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find RollbackDBTransaction in OLEDBIO "
+                "(Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading RollbackDBTransaction Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT8", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found RollbackDBTransaction.\n");
+      fflush(fDebug);
     }
 
     lpfnGetTransCount = (LPFNVOID)GetProcAddress(hOledbIODll, "GetTransCount");
     if (!lpfnGetTransCount) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find GetTransCount in OLEDBIO\n");
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading GetTransCount Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT8a", FALSE));
     }
@@ -2275,6 +2450,11 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
         (LPFN1BOOL)GetProcAddress(hOledbIODll, "AbortDBTransaction");
     if (!lpfnAbortDBTransaction) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AbortDBTransaction in OLEDBIO\n");
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading AbortTransaction Function", 0, 0,
                              "", iError, 0, 0, "ROLL INIT8b", FALSE));
     }
@@ -2283,16 +2463,37 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
         (LPFN1PCHAR1INT)GetProcAddress(hOledbIODll, "UnprepareRollQueries");
     if (!lpfnUnprepareRollQueries) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find UnprepareRollQueries in OLEDBIO\n");
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading UnprepareRollQueries Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT9", FALSE));
     }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding SelectPortmain in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpprSelectPortmain =
         (LPPRPORTMAIN)GetProcAddress(hOledbIODll, "SelectPortmain");
     if (!lpprSelectPortmain) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(
+            fDebug,
+            "InitRoll: Failed to find SelectPortmain in OLEDBIO (Error %d)\n",
+            iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (lpfnPrintError("Error Loading SelectPortmain Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT10", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectPortmain.\n");
+      fflush(fDebug);
     }
 
     lpprAccountInsertHoldings = (LPPR1LONG4PCHAR1BOOL)GetProcAddress(
@@ -2375,13 +2576,30 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
                              "", iError, 0, 0, "ROLL INIT19", FALSE));
     }
 
+    if (fDebug) {
+      fprintf(fDebug,
+              "InitRoll: Finding UpdatePortmainLastTransNo in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpprUpdatePortmainLastTransNo =
         (LPPR1INT1LONG)GetProcAddress(hOledbIODll, "UpdatePortmainLastTransNo");
     if (!lpprUpdatePortmainLastTransNo) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find UpdatePortmainLastTransNo in OLEDBIO "
+                "(Error %d)\n",
+                iError);
+        fflush(fDebug);
+        fclose(fDebug);
+      }
       return (
           lpfnPrintError("Unable To Load UpdatePortmainLastTransNo function", 0,
                          0, "", iError, 0, 0, "ROLL INIT20", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found UpdatePortmainLastTransNo.\n");
+      fflush(fDebug);
     }
 
     /*lpprAccountDeletePortbal = (LPPR1LONG1PCHAR) GetProcAddress(hOledbIODll,
@@ -2504,20 +2722,18 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
                              iError, 0, 0, "ROLL INIT32", FALSE));
     }
 
-    lpfnIsItAMonthEnd =
-        (LPFN1LONG)GetProcAddress(hStarsUtilsDll, "IsItAMonthEnd");
+    lpfnIsItAMonthEnd = (LPFN1LONG)GetProcAddress(hOledbIODll, "IsItAMonthEnd");
     if (!lpfnIsItAMonthEnd) {
       iError = GetLastError();
-      return (lpfnPrintError("Error Loading IsItAMonthEnd", 0, 0, "", iError, 0,
-                             0, "ROLL INIT33", FALSE));
+      return (lpfnPrintError("Error Loading IsItAMonthEnd from OLEDBIO", 0, 0,
+                             "", iError, 0, 0, "ROLL INIT33", FALSE));
     }
 
-    lpfnLastMonthEnd =
-        (LP2FN1LONG)GetProcAddress(hStarsUtilsDll, "LastMonthEnd");
+    lpfnLastMonthEnd = (LP2FN1LONG)GetProcAddress(hOledbIODll, "LastMonthEnd");
     if (!lpfnLastMonthEnd) {
       iError = GetLastError();
-      return (lpfnPrintError("Error Loading LastMonthEnd", 0, 0, "", iError, 0,
-                             0, "ROLL INIT34", FALSE));
+      return (lpfnPrintError("Error Loading LastMonthEnd from OLEDBIO", 0, 0,
+                             "", iError, 0, 0, "ROLL INIT34", FALSE));
     }
 
     lpprUpdatePerfDate =
@@ -2590,11 +2806,6 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
                 }*/
 
     bInit = TRUE;
-    FILE *f = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
-    if (f) {
-      fprintf(f, "InitRoll: Setting bInit to TRUE.\n");
-      fclose(f);
-    }
   } // If never initialized before
 
   zErr = CallInitTranProc(lAsofDate, sDBPath, sMode, sType, sErrFile);

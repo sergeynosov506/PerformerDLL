@@ -46,6 +46,11 @@ ERRSTRUCT STDCALL WINAPI PayDivInt(long lValDate, const char *sMode,
   long lXrefTransNo, lLastDivintNo, lBondEligDate, lEndDate;
   short mdy[3];
 
+  memset(&zErr, 0, sizeof(ERRSTRUCT));
+  if (!bInit) {
+    zErr.iSqlError = -1;
+    return zErr;
+  }
   lpprInitializeErrStruct(&zErr);
   i = iErrors = zPmainTable.iPmainCreated = 0;
   memset(&zTrans, 0, sizeof(zTrans));

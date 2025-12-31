@@ -25,50 +25,52 @@ public static class TransEngine
     #region Initialization
 
     /// <summary>
-    /// Initializes the transaction processing engine with connection information.
+    /// Initializes the transaction processing engine.
     /// </summary>
-    /// <param name="server">Database server name</param>
-    /// <param name="database">Database name</param>
-    /// <param name="username">Database username (optional for Windows auth)</param>
-    /// <param name="password">Database password (optional for Windows auth)</param>
-    /// <param name="useWindowsAuth">Use Windows authentication</param>
-    /// <returns>0 if successful, non-zero error code otherwise</returns>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern int InitTranProc(
-        [MarshalAs(UnmanagedType.LPStr)] string server,
-        [MarshalAs(UnmanagedType.LPStr)] string database,
-        [MarshalAs(UnmanagedType.LPStr)] string? username,
-        [MarshalAs(UnmanagedType.LPStr)] string? password,
-        [MarshalAs(UnmanagedType.Bool)] bool useWindowsAuth);
+    /// <param name="lAsofDate">As of date (YYYYMMDD)</param>
+    /// <param name="sDBAlias">Database alias or connection string</param>
+    /// <param name="sMode">Mode string</param>
+    /// <param name="sType">Type string</param>
+    /// <param name="bPrepareQueries">Whether to prepare queries</param>
+    /// <param name="sErrFile">Path to error log file</param>
+    /// <returns>Error structure</returns>
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT InitTranProc(
+        int lAsofDate,
+        [MarshalAs(UnmanagedType.LPStr)] string sDBAlias,
+        [MarshalAs(UnmanagedType.LPStr)] string sMode,
+        [MarshalAs(UnmanagedType.LPStr)] string sType,
+        [MarshalAs(UnmanagedType.Bool)] bool bPrepareQueries,
+        [MarshalAs(UnmanagedType.LPStr)] string sErrFile);
 
     /// <summary>
     /// Initializes an error structure.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void InitializeErrStruct(ref ERRSTRUCT err);
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern void InitializeErrStruct(ref NativeERRSTRUCT err);
 
     /// <summary>
     /// Initializes a transaction structure with default values.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void InitializeTransStruct(ref TRANS trans);
 
     /// <summary>
     /// Initializes a holdings structure with default values.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void InitializeHoldingsStruct(ref HOLDINGS holdings);
 
     /// <summary>
     /// Initializes a portfolio main structure with default values.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void InitializePortmainStruct(ref PORTMAIN portMain);
 
     /// <summary>
     /// Initializes DTrans description structure.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void InitializeDtransDesc();
 
     #endregion
@@ -90,17 +92,17 @@ public static class TransEngine
     /// 3. Calculates cost basis and gains/losses
     /// 4. Updates portfolio balances
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT TranProc(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT TranProc(
         int iID,
         ref TRANS trans,
         [MarshalAs(UnmanagedType.Bool)] bool updateHoldings,
-        ref ERRSTRUCT err);
+        ref NativeERRSTRUCT err);
 
     /// <summary>
     /// Gets information about the last TranProc operation.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void TranProcInfo();
 
     /// <summary>
@@ -115,12 +117,12 @@ public static class TransEngine
     /// Used for sells/dispositions to determine which lots are being sold.
     /// Supports multiple allocation methods based on tax optimization.
     /// </remarks>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT TranAlloc(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT TranAlloc(
         int iID,
         ref TRANS trans,
         [MarshalAs(UnmanagedType.LPStr)] string allocationMethod,
-        ref ERRSTRUCT err);
+        ref NativeERRSTRUCT err);
 
     #endregion
 
@@ -133,11 +135,11 @@ public static class TransEngine
     /// <param name="trans">Transaction that was processed</param>
     /// <param name="err">Error structure</param>
     /// <returns>Error structure with results</returns>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT UpdateHold(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT UpdateHold(
         int iID,
         ref TRANS trans,
-        ref ERRSTRUCT err);
+        ref NativeERRSTRUCT err);
 
     #endregion
 
@@ -146,7 +148,7 @@ public static class TransEngine
     /// <summary>
     /// Initializes the transaction table for batch operations.
     /// </summary>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void InitializeTransTable2();
 
     /// <summary>
@@ -155,7 +157,7 @@ public static class TransEngine
     /// <param name="trans">Transaction to add</param>
     /// <param name="index">Index in the table</param>
     /// <returns>Success indicator</returns>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern int AddTransToTransTable2(ref TRANS trans, int index);
 
     #endregion
@@ -171,13 +173,13 @@ public static class TransEngine
     /// <param name="endDate">Calculation end date</param>
     /// <param name="err">Error structure</param>
     /// <returns>Error structure with phantom income amount</returns>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT CalculatePhantomIncome(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT CalculatePhantomIncome(
         int iID,
         int iSecID,
         int startDate,
         int endDate,
-        ref ERRSTRUCT err);
+        ref NativeERRSTRUCT err);
 
     /// <summary>
     /// Calculates inflation rate for TIPS or inflation-indexed securities.
@@ -187,12 +189,12 @@ public static class TransEngine
     /// <param name="inflationRate">Output: calculated rate</param>
     /// <param name="err">Error structure</param>
     /// <returns>Error structure with results</returns>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT CalculateInflationRate(
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern NativeERRSTRUCT CalculateInflationRate(
         int iSecID,
         int date,
         ref double inflationRate,
-        ref ERRSTRUCT err);
+        ref NativeERRSTRUCT err);
 
     #endregion
 
@@ -203,16 +205,16 @@ public static class TransEngine
     /// </summary>
     /// <param name="message">Error message</param>
     /// <param name="err">Error structure</param>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void PrintError(
         [MarshalAs(UnmanagedType.LPStr)] string message,
-        ref ERRSTRUCT err);
+        ref NativeERRSTRUCT err);
 
     /// <summary>
     /// Sets the error log file name.
     /// </summary>
     /// <param name="fileName">Full path to error log file</param>
-    [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
     public static extern void SetErrorFileName(
         [MarshalAs(UnmanagedType.LPStr)] string fileName);
 
@@ -223,9 +225,9 @@ public static class TransEngine
     /// <summary>
     /// Safely executes a TransEngine operation with error handling.
     /// </summary>
-    public static void SafeCall(Func<ERRSTRUCT, ERRSTRUCT> operation, string operationName)
+    public static void SafeCall(Func<NativeERRSTRUCT, NativeERRSTRUCT> operation, string operationName)
     {
-        var err = new ERRSTRUCT();
+        var err = new NativeERRSTRUCT();
         InitializeErrStruct(ref err);
 
         try

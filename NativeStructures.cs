@@ -11,13 +11,14 @@ public struct NativeERRSTRUCT
 {
     public int iID;
     public int lRecNo;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
     public string sRecType;
     public int iBusinessError;
     public int iSqlError;
     public int iIsamCode;
 
-    public readonly bool IsSuccess => iSqlError == 0;
+    public readonly bool IsSuccess => iSqlError == 0 && iBusinessError == 0;
+    public readonly string FormatError() => $"Native Error (ID={iID}, SQL={iSqlError}, Business={iBusinessError})";
 
     public ERRSTRUCT ToLegacy()
     {
@@ -52,9 +53,9 @@ public struct ERRSTRUCT
     public int iLineNumber;
 
     /// <summary>
-    /// Checks if the operation was successful (no SQL error).
+    /// Checks if the operation was successful (no SQL error and no business error).
     /// </summary>
-    public readonly bool IsSuccess => iSqlError == 0;
+    public readonly bool IsSuccess => iSqlError == 0 && iErrorCode == 0;
 
     /// <summary>
     /// Gets a formatted error message.
@@ -281,28 +282,106 @@ public struct TRANS
 }
 
 /// <summary>
+/// Payment transaction structure. Maps to PAYTRAN struct in trans.h.
+/// </summary>
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+public struct NativePAYTRAN
+{
+    public int iID;
+    public int lTransNo;
+    public int lPayeeID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+    public string sDsc;
+}
+
+/// <summary>
 /// Portfolio main record structure.
 /// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct PORTMAIN
 {
     public int iID;
-    
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-    public string sAcctNo;
-    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+    public string sUniqueName;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+    public string sAbbrev;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 61)]
-    public string sAcctName;
-    
-    public int lLastTransNo;
-    public int lLastRollDate;
-    public int lValuationDate;
-    
+    public string sDescription;
+    public int lDateHired;
+    public double fIndividualMinAnnualFee;
+    public double fIndividualMinAcctSize;
+    public double fTotalAssetsManaged;
+    public int iInvestmentStyle;
+    public int iScope;
+    public int iDecisionMaking;
+    public int iDefaultReturnType;
+    public int iProductType;
+    public double fExpenseRatio;
+    public int iMarketCap;
+    public int iMaturity;
+    public int lAsofDate;
+    public short iFiscalYearEndMonth;
+    public short iFiscalYearEndDay;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+    public string sPeriodType;
+    public int lInceptionDate;
+    public bool bUserInceptionDate;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sPortfolioType;
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-    public string sAcctType;
-    
-    public int iManagerID;
-    public int iCustodianID;
+    public string sAdministrator;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+    public string sManager;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+    public string sAddress1;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+    public string sAddress2;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+    public string sAddress3;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sAcctMethod;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sTax;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+    public string sBaseCurrId;
+    public bool bIncome;
+    public bool bActions;
+    public bool bMature;
+    public bool bCAvail;
+    public bool bFAvail;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string sAlloc;
+    public double fMaxEqPct;
+    public double fMaxFiPct;
+    public double fMinCashPct;
+    public int iEqLotSize;
+    public int iFiLotSize;
+    public int lValDate;
+    public int lDeleteDate;
+    public bool bIsInactive;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sCurrHandler;
+    public bool bAmortMuni;
+    public bool bAmortOther;
+    public bool bAccreteDisc;
+    public int lAmortStartDate; // Note: lAmortStartDate is long (int in C#)
+    public bool bAccretMuni;
+    public bool bAccretOther;
+    public bool bIncByLot;
+    public bool bDiscretionaryAuthority;
+    public bool bVotingAuthority;
+    public bool bSpecialArrangements;
+    public int iIncomeMoneyMarketFund;
+    public int iPrincipalMoneyMarketFund;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sIncomeProcessing;
+    public int lPricingEffectiveDate;
+    public int lLastTransNo;
+    public int lPurgeDate;
+    public int lLastActivity;
+    public int lRollDate;
+    public int iVendorID;
+    public bool bIsMarketIndex;
 }
 
 /// <summary>
@@ -312,7 +391,6 @@ public struct PORTMAIN
 public struct HOLDINGS
 {
     public int iID;
-    public int lTaxlotNo;
     
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
     public string sSecNo;
@@ -326,11 +404,89 @@ public struct HOLDINGS
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
     public string sAcctType;
     
+    public int lTransNo;
     public int iSecID;
+    public int lAsofDate;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string sSecSymbol;
+    
     public double fUnits;
     public double fOrigFace;
-    public double fUnitCost;
     public double fTotCost;
-    public int lOpenDate;
-    public int lCloseDate;
+    public double fUnitCost;
+    public double fOrigCost;
+    public double fOpenLiability;
+    public double fBaseCostXrate;
+    public double fSysCostXrate;
+    public int lTrdDate;
+    public int lEffDate;
+    public int lEligDate;
+    public int lStlDate;
+    public double fOrigYield;
+    public int lEffMatDate;
+    public double fEffMatPrice;
+    public double fCostEffMatYld;
+    public int lAmortStartDate;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+    public string sOrigTransType;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sOrigTransSrce;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+    public string sLastTransType;
+    
+    public int lLastTransNo;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sLastTransSrce;
+    
+    public int lLastPmtDate;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+    public string sLastPmtType;
+    
+    public int lLastPmtTrNo;
+    public int lNextPmtDate;
+    public double fNextPmtAmt;
+    public int lLastPdnDate;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+    public string sLtStInd;
+    
+    public double fMktVal;
+    public double fCurLiability;
+    public double fMvBaseXrate;
+    public double fMvSysXrate;
+    public double fAccrInt;
+    public double fAiBaseXrate;
+    public double fAiSysXrate;
+    public double fAnnualIncome;
+    public double fAccrualGl;
+    public double fCurrencyGl;
+    public double fSecurityGl;
+    public double fMktEffMatYld;
+    public double fMktCurYld;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sSafekInd;
+    
+    public double fCollateralUnits;
+    public double fHedgeValue;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string sBenchmarkSecNo;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sPermLtFlag;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 3)]
+    public string sValuationSrce;
+    
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2)]
+    public string sPrimaryType;
+    
+    public int iRestrictionCode;
 }

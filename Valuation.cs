@@ -92,23 +92,22 @@ public static class Valuation
             
             if (!result.IsSuccess)
             {
-                var legacyErr = result.ToLegacy();
                 throw new NativeInteropException(
-                    $"Valuation.{operationName} failed: {legacyErr.FormatError()}",
-                    legacyErr);
+                    $"Valuation.{operationName} failed: {result.FormatError()}",
+                    result);
             }
         }
         catch (DllNotFoundException)
         {
             throw new NativeInteropException(
                 "Valuation.dll not found. Ensure it's in the application directory.",
-                new ERRSTRUCT());
+                new NativeERRSTRUCT());
         }
         catch (EntryPointNotFoundException ex)
         {
             throw new NativeInteropException(
                 $"Function '{operationName}' not found in Valuation.dll.",
-                new ERRSTRUCT(),
+                new NativeERRSTRUCT(),
                 ex);
         }
     }

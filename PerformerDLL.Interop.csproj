@@ -6,8 +6,8 @@
     <RootNamespace>PerformerDLL.Interop</RootNamespace>
     <AssemblyName>PerformerDLL.Interop</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Platforms>x64</Platforms>
-    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <BaseOutputPath>E:\projects\PerformerDLL</BaseOutputPath>
   </PropertyGroup>
 
@@ -21,10 +21,14 @@
 
   <ItemGroup>
     <Compile Include="CalcFlow.cs" />
+    <Compile Include="CompositeCreate.cs" />
+    <Compile Include="CreateHoldTot.cs" />
     <Compile Include="NativeStructures.cs" />
     <Compile Include="OLEDBIO.cs" />
     <Compile Include="Payments.cs" />
+    <Compile Include="Performance.cs" />
     <Compile Include="Roll.cs" />
+    <Compile Include="StarsUtils.cs" />
     <Compile Include="TransEngine.cs" />
     <Compile Include="Valuation.cs" />
     <Compile Include="YieldDuration.cs" />

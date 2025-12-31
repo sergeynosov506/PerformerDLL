@@ -205,7 +205,76 @@ bool bAssetIsValid = false;
 SUBACCTTABLE1 zSATable;
 TRANTYPETABLE1 zTTable;
 
-//*****************************************************************
+// ----------------------------------------------------------
+// AppRole Logic (Ported from Login.dll / LoginCOMUnit.pas)
+// ----------------------------------------------------------
+static bool NeedToInvokeAppRole(nanodbc::connection &conn) {
+  try {
+    // Check if current user is 'SYS' (System User) in usersdef table
+    // Delphi: Select * from usersdef where user_id = 'UserID'
+    // We use SYSTEM_USER (or USER_NAME()) to get current ID
+    nanodbc::result results = nanodbc::execute(
+        conn, "SELECT InternalUser FROM usersdef WHERE user_id = USER_NAME()");
+
+    if (results.next()) {
+      std::string internalUser = results.get<std::string>(0);
+      // If InternalUser is 'SYS', we do NOT invoke AppRole
+      if (_stricmp(internalUser.c_str(), "SYS") == 0) {
+        return false;
+      }
+    }
+    // Default to true if user not found or not 'SYS'
+    return true;
+  } catch (...) {
+    // If table doesn't exist or error, fail safe (invoke role?) or skip?
+    // Delphi code defaults to TRUE on exception.
+    return true;
+  }
+}
+
+static void InvokeAppRole(nanodbc::connection &conn) {
+  fprintf(stderr, "!!! AppRole: Checking if needed !!!\n");
+  if (!NeedToInvokeAppRole(conn)) {
+    fprintf(stderr, "!!! AppRole: Not needed (InternalUser = SYS) !!!\n");
+    return;
+  }
+
+  try {
+    fprintf(stderr, "!!! AppRole: Querying appRole table !!!\n");
+    // Get Role and Password
+    // Delphi: Select Role, Password from appRole
+    nanodbc::result results =
+        nanodbc::execute(conn, "SELECT Role, Password FROM appRole");
+
+    if (results.next()) {
+      std::string role = results.get<std::string>(0);
+      std::string pwd = results.get<std::string>(1);
+
+      if (!role.empty() && role != "NO") {
+        fprintf(stderr, "!!! AppRole: Invoking role %s !!!\n", role.c_str());
+        char sql[1024];
+        sprintf_s(
+            sql,
+            "IF (SELECT USER_NAME()) <> '%s' EXEC sp_setapprole '%s', '%s'",
+            role.c_str(), role.c_str(), pwd.c_str());
+
+        nanodbc::execute(conn, sql);
+        fprintf(stderr, "!!! AppRole: Successfully invoked role %s !!!\n",
+                role.c_str());
+      }
+    } else {
+      fprintf(stderr,
+              "!!! AppRole: No role found in appRole table for OLEDBIO !!!\n");
+    }
+  } catch (const std::exception &e) {
+    fprintf(stderr, "!!! AppRole Error: %s !!!\n", e.what());
+#ifdef DEBUG
+    PrintError((char *)e.what(), 0, 0, (char *)"W", 0, -1, 0,
+               (char *)"InvokeAppRole", FALSE);
+#endif
+  }
+}
+
 DLLAPI void STDCALL InitializeOLEDBIO(char *sAlias, char *sMode, char *sType,
                                       long lAsofDate, int iPrepareWhat,
                                       ERRSTRUCT *pzErr) {
@@ -230,55 +299,51 @@ DLLAPI void STDCALL InitializeOLEDBIO(char *sAlias, char *sMode, char *sType,
     try {
       if (sConnectStr[0]) {
         // Convert legacy OLE DB string (or DSN) to ODBC Driver 18
-        std::string odbcStr = AdaptToODBC(sConnectStr);
-        gConn = nanodbc::connection(odbcStr);
-      } else {
-        // Fallback: attempt DSN from GetODBCDSNAndDBName
-        char sODBCDSN[256] = {0};
-        char sSQLDBName[256] = {0};
-        GetODBCInfo(sODBCDSN, sSQLDBName, pzErr);
-        if (sODBCDSN[0]) {
-          std::string odbcStr = std::string("DSN=") + sODBCDSN + ";";
-          if (sSQLDBName[0])
-            odbcStr += std::string("Database=") + sSQLDBName + ";";
-          // UID/PWD may come via Login.DLL below; we keep the connection open
-          // now.
-          gConn = nanodbc::connection(odbcStr);
+        std::string odbcStr;
+        if (strchr(sConnectStr, '=') == nullptr) {
+          // No key-value pairs? Assume it is a DSN.
+          odbcStr = std::string("DSN=") + sConnectStr + ";";
         } else {
-          pzErr->iSqlError = -1;
-          PrintError(const_cast<char *>("No connection string / DSN provided"),
-                     0, 0, const_cast<char *>(""), 0, pzErr->iSqlError, 0,
-                     const_cast<char *>("INITOLEDBIO2c"), FALSE);
-          return;
+          odbcStr = AdaptToODBC(sConnectStr);
         }
-        // --- Acquire User/Password (kept for app role / legacy modules that still
-// expect it) ---
-        int iUID = 0;
-        // char sUser[128] = { 0 }; // Moved to global scope
-        char sPassword[128] = { 0 };
-        if (lpfnGetUserAndPassword(sAlias, sUser, sPassword, &iUID, FALSE) != 0) {
-            pzErr->iSqlError = -1;
-            PrintError(const_cast<char*>(
-                "Unable to call GetUserAndPassword from login.dll"),
-                0, 0, const_cast<char*>(""), 0, -1, 0,
-                const_cast<char*>("INITOLEDBIO3"), FALSE);
-            return;
-        }
-
+        fprintf(stderr, "!!! Connecting to: %s !!!\n", odbcStr.c_str());
+        fflush(stderr);
+        gConn = nanodbc::connection(odbcStr);
+        // Verify connection with a simple query (throws if invalid)
+        nanodbc::execute(gConn, "SELECT 1");
+      } else {
+        // Strict Mode: If alias was provided but no connection string found ->
+        // ERROR. Do NOT fallback to default DSN.
+        pzErr->iSqlError = -1;
+        char sMsg[256];
+        sprintf_s(sMsg, "No connection string found for alias: %s",
+                  sAlias ? sAlias : "(null)");
+        fprintf(stderr, "!!! FAILED: %s !!!\n", sMsg);
+        fflush(stderr);
+        PrintError(sMsg, 0, 0, const_cast<char *>(""), 0, pzErr->iSqlError, 0,
+                   const_cast<char *>("INITOLEDBIO2c"), FALSE);
+        return;
       }
+
+      // Login.dll dependency removed. User/Password must be in DSN or
+      // ConnectionString. Legacy 'GetUserAndPassword' call removed.
     } catch (const nanodbc::database_error &e) {
       pzErr->iSqlError = -1;
+      fprintf(stderr, "!!! DB ERROR: %s !!!\n", e.what());
+      fflush(stderr);
       PrintError(const_cast<char *>(e.what()), 0, 0, const_cast<char *>("E"), 0,
                  pzErr->iSqlError, 0, const_cast<char *>("INITOLEDBIO_CONNECT"),
                  FALSE);
       return;
     }
 
-
     // Mark initialized and cache alias
     gInitialized = true;
     strcpy_s(sDBAlias, sAlias);
-  } // !OLEDBIOInitialized
+
+    // --- Invoke AppRole (Legacy Security) ---
+    InvokeAppRole(gConn);
+  }
 
   // --- Holdmap init (unchanged behavior) ---
   *pzErr = InitHoldmap(lAsofDate);

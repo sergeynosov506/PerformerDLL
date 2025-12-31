@@ -41,11 +41,9 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitializeAccountValuation(long lAsofDate,
       zErr.iBusinessError = GetLastError();
       return zErr;
     }
-    hStarsUtilsDll = LoadLibrarySafe("StarsUtils.DLL");
-    if (hStarsUtilsDll == NULL) {
-      zErr.iBusinessError = GetLastError();
-      return zErr;
-    }
+    /* StarsUtils.dll is legacy 32-bit Delphi. Calendar functions now in
+     * OLEDBIO.dll */
+    hStarsUtilsDll = NULL; // No longer loading StarsUtils.dll
 
     lpprInitializeErrStruct =
         (LPPRERRSTRUCT)GetProcAddress(hTransEngineDll, "InitializeErrStruct");
@@ -399,16 +397,16 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitializeAccountValuation(long lAsofDate,
                              iError, 0, 0, "ACCTVALUATION INIT31", FALSE));
     }
 
-    lpfnLastBusinessDay = (LPFN1LONG2PCHAR1PLONG)GetProcAddress(
-        hStarsUtilsDll, "LastBusinessDay");
+    lpfnLastBusinessDay =
+        (LPFN1LONG2PCHAR1PLONG)GetProcAddress(hOledbIODll, "LastBusinessDay");
     if (!lpfnLastBusinessDay) {
       iError = GetLastError();
       return (lpfnPrintError("Unable To Load LastBusinessDay Function", 0, 0,
                              "", iError, 0, 0, "ACCTVALUATION INIT32", FALSE));
     }
 
-    lpfnNextBusinessDay = (LPFN1LONG2PCHAR1PLONG)GetProcAddress(
-        hStarsUtilsDll, "NextBusinessDay");
+    lpfnNextBusinessDay =
+        (LPFN1LONG2PCHAR1PLONG)GetProcAddress(hOledbIODll, "NextBusinessDay");
     if (!lpfnNextBusinessDay) {
       iError = GetLastError();
       return (lpfnPrintError("Unable To Load NextBusinessDay Function", 0, 0,
@@ -416,7 +414,7 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitializeAccountValuation(long lAsofDate,
     }
 
     lpfnIsItAMarketHoliday =
-        (LPFN1LONG1PCHAR)GetProcAddress(hStarsUtilsDll, "IsItAMarketHoliday");
+        (LPFN1LONG1PCHAR)GetProcAddress(hOledbIODll, "IsItAMarketHoliday");
     if (!lpfnIsItAMarketHoliday) {
       iError = GetLastError();
       return (lpfnPrintError("Unable To Load IsItAMarketHolidayDay Function", 0,

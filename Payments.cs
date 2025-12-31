@@ -21,7 +21,7 @@ public static class Payments
     /// <param name="errFile">Error log file path</param>
     /// <returns>Error structure</returns>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT InitPayments(
+    public static extern NativeERRSTRUCT InitPayments(
         [MarshalAs(UnmanagedType.LPStr)] string dbPath,
         [MarshalAs(UnmanagedType.LPStr)] string type,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
@@ -32,7 +32,7 @@ public static class Payments
     /// Performs amortization processing.
     /// </summary>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT Amortize(
+    public static extern NativeERRSTRUCT Amortize(
         int valDate,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         [MarshalAs(UnmanagedType.LPStr)] string processFlag,
@@ -47,7 +47,7 @@ public static class Payments
     /// Generates dividend and interest records.
     /// </summary>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT GenerateDivInt(
+    public static extern NativeERRSTRUCT GenerateDivInt(
         int valDate,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         [MarshalAs(UnmanagedType.LPStr)] string type,
@@ -62,7 +62,7 @@ public static class Payments
     /// Processes payment of dividends and interest.
     /// </summary>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT PayDivInt(
+    public static extern NativeERRSTRUCT PayDivInt(
         int valDate,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         [MarshalAs(UnmanagedType.LPStr)] string processFlag,
@@ -77,7 +77,7 @@ public static class Payments
     /// Generates forward maturity records.
     /// </summary>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT GenerateForwardMaturity(
+    public static extern NativeERRSTRUCT GenerateForwardMaturity(
         int valDate,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         int id,
@@ -90,7 +90,7 @@ public static class Payments
     /// Generates maturity processing records.
     /// </summary>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT GenerateMaturity(
+    public static extern NativeERRSTRUCT GenerateMaturity(
         int valDate,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         int id,
@@ -103,7 +103,7 @@ public static class Payments
     /// Generates phantom income records (e.g. for TIPS).
     /// </summary>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
-    public static extern ERRSTRUCT GeneratePhantomIncome(
+    public static extern NativeERRSTRUCT GeneratePhantomIncome(
         int valDate,
         [MarshalAs(UnmanagedType.LPStr)] string mode,
         int id,

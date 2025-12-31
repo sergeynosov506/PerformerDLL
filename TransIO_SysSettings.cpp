@@ -7,8 +7,7 @@
 
 extern thread_local nanodbc::connection gConn;
 
-DLLAPI void STDCALL SelectSyssettings(SYSSETTING *pzSyssetng,
-                                      ERRSTRUCT *pzErr) {
+DLLAPI void SelectSyssettings(SYSSETTING *pzSyssetng, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
 
   if (!gConn.connected()) {
@@ -90,7 +89,7 @@ DLLAPI void STDCALL SelectSyssettings(SYSSETTING *pzSyssetng,
   }
 }
 
-DLLAPI void STDCALL SelectSysvalues(SYSVALUES *pzSysvalues, ERRSTRUCT *pzErr) {
+DLLAPI void SelectSysvalues(SYSVALUES *pzSysvalues, ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
 
   if (!gConn.connected()) {

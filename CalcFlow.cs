@@ -66,7 +66,7 @@ public static class CalcFlow
     /// - Fee allocations
     /// </remarks>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl)]
-    public static extern ERRSTRUCT CalculateNetFlow(
+    public static extern NativeERRSTRUCT CalculateNetFlow(
         TRANS trans,
         [MarshalAs(UnmanagedType.LPStr)] string securityData,
         ref FLOWCALCSTRUCT flowResults);
@@ -84,7 +84,7 @@ public static class CalcFlow
     /// Used for performance reporting and analytics.
     /// </remarks>
     [DllImport(DLL_NAME, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CalculateNetFlowPerf")]
-    public static extern ERRSTRUCT CalculateNetFlowWithPerformance(
+    public static extern NativeERRSTRUCT CalculateNetFlowWithPerformance(
         TRANS trans,
         [MarshalAs(UnmanagedType.LPStr)] string securityData,
         ref FLOWCALCSTRUCT flowResults,
@@ -106,7 +106,7 @@ public static class CalcFlow
 
         try
         {
-            ERRSTRUCT result;
+            NativeERRSTRUCT result;
             
             if (includePerformance)
             {
@@ -137,7 +137,7 @@ public static class CalcFlow
         {
             throw new NativeInteropException(
                 "CalcFlow.dll not found. Ensure it's in the application directory.",
-                new ERRSTRUCT());
+                new NativeERRSTRUCT());
         }
     }
 

@@ -19,7 +19,7 @@
 #include "payments.h"
 
 HINSTANCE hDelphiCDll, hStarsIODll, hStarsUtilsDll, hTEngineDll;
-static BOOL bInit = FALSE;
+BOOL bInit = FALSE;
 
 ERRSTRUCT STDCALL WINAPI InitPayments(const char *sDBPath, const char *sType,
                                       const char *sMode, long lAsofDate,
@@ -76,13 +76,9 @@ ERRSTRUCT STDCALL WINAPI InitPayments(const char *sDBPath, const char *sType,
                              0, "PAYMENTS INIT2", FALSE));
     }
 
-    // Load "StasUtils" dll created in Delphi
-    hStarsUtilsDll = LoadLibrarySafe("StarsUtils.dll");
-    if (hStarsUtilsDll == NULL) {
-      iError = GetLastError();
-      return (lpfnPrintError("Error Loading StarsUtils Dll", 0, 0, "", iError,
-                             0, 0, "PAYMENTS INIT3", FALSE));
-    }
+    // StarsUtils.dll is legacy 32-bit Delphi. Calendar functions now in
+    // OLEDBIO.dll
+    hStarsUtilsDll = NULL; // No longer loading StarsUtils.dll
 
     // Load functions from DelphiCInterface.Dll
     lpfnCalculatePriceGivenYield = (LPPRCALCULATEPRICEGIVENYIELD)GetProcAddress(
@@ -452,38 +448,37 @@ ERRSTRUCT STDCALL WINAPI InitPayments(const char *sDBPath, const char *sType,
                              0, "", iError, 0, 0, "PAYMENTS INIT38D", FALSE));
     }
 
-    // Load functions from StarsUtils.Dll
-    lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hStarsUtilsDll, "rmdyjul");
+    // Load date functions from OLEDBIO.Dll
+    lpfnrmdyjul = (LPFNRMDYJUL)GetProcAddress(hStarsIODll, "rmdyjul");
     if (!lpfnrmdyjul) {
       iError = GetLastError();
       return (lpfnPrintError("Error Loading rmdyjul Function", 0, 0, "", iError,
                              0, 0, "PAYMENTS INIT39", FALSE));
     }
 
-    lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hStarsUtilsDll, "rjulmdy");
+    lpfnrjulmdy = (LPFNRJULMDY)GetProcAddress(hStarsIODll, "rjulmdy");
     if (!lpfnrjulmdy) {
       iError = GetLastError();
       return (lpfnPrintError("Error Loading rjulmdy Function", 0, 0, "", iError,
                              0, 0, "PAYMENTS INIT40", FALSE));
     }
 
-    lpfnrstrdate = (LPFN1PCHAR1PLONG)GetProcAddress(hStarsUtilsDll, "rstrdate");
+    lpfnrstrdate = (LPFN1PCHAR1PLONG)GetProcAddress(hStarsIODll, "rstrdate");
     if (!lpfnrstrdate) {
       iError = GetLastError();
       return (lpfnPrintError("Error Loading rstrdate Function", 0, 0, "",
                              iError, 0, 0, "PAYMENTS INIT41", FALSE));
     }
 
-    lpfnNextBusinessDay = (LPFN1LONG2PCHAR1PLONG)GetProcAddress(
-        hStarsUtilsDll, "NextBusinessDay");
+    lpfnNextBusinessDay =
+        (LPFN1LONG2PCHAR1PLONG)GetProcAddress(hStarsIODll, "NextBusinessDay");
     if (!lpfnNextBusinessDay) {
       iError = GetLastError();
       return (lpfnPrintError("Error Loading NextBusinessDay Function", 0, 0, "",
                              iError, 0, 0, "PAYMENTS INIT42", FALSE));
     }
 
-    lpfnLastMonthEnd =
-        (LP2FN1LONG)GetProcAddress(hStarsUtilsDll, "LastMonthEnd");
+    lpfnLastMonthEnd = (LP2FN1LONG)GetProcAddress(hStarsIODll, "LastMonthEnd");
     if (!lpfnLastMonthEnd) {
       iError = GetLastError();
       return (lpfnPrintError("Error Loading lpfnLastMonthEnd Function", 0, 0,

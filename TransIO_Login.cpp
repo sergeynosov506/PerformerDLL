@@ -31,43 +31,12 @@ void GetConnectionString(char *sAlias, char *sConnectStr, ERRSTRUCT *pzErr) {
     return;
   }
 
-  sConnectStr[0] = '\0';
-
-  // Try to load Login.DLL if not already loaded
-  if (!hLoginDLL) {
-    hLoginDLL = LoadLibraryA("Login.dll");
-    if (!hLoginDLL) {
-// Login.DLL not found - this is acceptable; we'll use fallback
-#ifdef DEBUG
-      PrintError(
-          (char *)"Login.dll not found, using fallback connection method", 0, 0,
-          (char *)"", 0, 0, 0, (char *)"GetConnectionString", FALSE);
-#endif
-      return;
-    }
-
-    // Get function pointer for GetUserAndPassword
-    lpfnGetUserAndPassword =
-        (LPFNGetUserAndPassword)GetProcAddress(hLoginDLL, "GetUserAndPassword");
-  }
-
-  // Try to get connection string from Login.DLL if available
-  if (hLoginDLL) {
-    // Try GetConnectionString function from Login.DLL
-    typedef void(CALLBACK * LPFNGetConnectionString)(char *, char *);
-    LPFNGetConnectionString pfnGetConnStr =
-        (LPFNGetConnectionString)GetProcAddress(hLoginDLL,
-                                                "GetConnectionStringC");
-
-    if (pfnGetConnStr) {
-      pfnGetConnStr(sAlias, sConnectStr);
-    }
-  }
-
-  // Fallback: If no connection string returned, but alias looks like a
-  // connection string (key=value), use it.
-  if (sConnectStr[0] == '\0' && sAlias && strchr(sAlias, '=')) {
+  // Login.dll dependency removed.
+  // The provided alias is treated as the connection string or DSN.
+  if (sAlias) {
     strncpy_s(sConnectStr, 512, sAlias, _TRUNCATE);
+  } else {
+    sConnectStr[0] = '\0';
   }
 }
 
@@ -85,30 +54,9 @@ void GetODBCInfo(char *sODBCDSN, char *sSQLDBName, ERRSTRUCT *pzErr) {
     return;
   }
 
+  // Login.dll dependency removed.
+  // We assume the caller handles DSN/DB config or this function is deprecated.
+  // For now, return empty strings to indicate no legacy info.
   sODBCDSN[0] = '\0';
   sSQLDBName[0] = '\0';
-
-  // Try to load Login.DLL if not already loaded
-  if (!hLoginDLL) {
-    hLoginDLL = LoadLibraryA("Login.dll");
-    if (!hLoginDLL) {
-#ifdef DEBUG
-      PrintError((char *)"Login.dll not found for ODBC info", 0, 0, (char *)"",
-                 0, 0, 0, (char *)"GetODBCInfo", FALSE);
-#endif
-      return;
-    }
-  }
-
-  // Try to get ODBC info from Login.DLL
-  if (hLoginDLL) {
-    typedef void(CALLBACK * LPFNGetODBCDSNAndDBName)(char *, char *);
-    LPFNGetODBCDSNAndDBName pfnGetODBCInfo =
-        (LPFNGetODBCDSNAndDBName)GetProcAddress(hLoginDLL,
-                                                "GetODBCDSNAndDBName");
-
-    if (pfnGetODBCInfo) {
-      pfnGetODBCInfo(sODBCDSN, sSQLDBName);
-    }
-  }
 }

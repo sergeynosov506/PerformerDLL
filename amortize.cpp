@@ -42,6 +42,11 @@ ERRSTRUCT STDCALL WINAPI Amortize(long lValDate, const char *sMode,
   PORTTABLE zPmainTable;
   //	long         lStartDate, lForwardDate;
 
+  memset(&zErr, 0, sizeof(ERRSTRUCT));
+  if (!bInit) {
+    zErr.iSqlError = -1;
+    return zErr;
+  }
   lpprInitializeErrStruct(&zErr);
   zPmainTable.iPmainCreated = 0;
   zPInfoTable.iPICreated = 0;
@@ -950,4 +955,5 @@ void InitializeHoldingsStruct(HOLDINGS *pzHoldings) {
   pzHoldings->fCollateralUnits = pzHoldings->fHedgeValue = 0;
   pzHoldings->sBenchmarkSecNo[0] = pzHoldings->sPermLtFlag[0] = '\0';
   pzHoldings->sValuationSrce[0] = pzHoldings->sPrimaryType[0] = '\0';
-}}
+}
+}

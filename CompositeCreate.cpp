@@ -63,6 +63,12 @@ void STDCALL WINAPI CreateComposite(int iOwnerID, long lDate,
   long lInitDate;
 
   /*Initilization*/
+  if (!bCompCreateInit) {
+    memset(zErr, 0, sizeof(ERRSTRUCT));
+    zErr->iSqlError = -1;
+    return;
+  }
+
   zHoldingsTable.iNumHoldCreated = 0;
   zHoldcashTable.iNumHoldCashCreated = 0;
   InitializeHoldingsTable(&zHoldingsTable);
@@ -532,12 +538,10 @@ void STDCALL InitializeDllRoutines(long lAsofDate, char *sDBAlias, char *sMode,
       zErr->iBusinessError = GetLastError();
       return;
     }
-    /*Load StarsUtils.*/
-    hStarsUtilsDll = LoadLibrarySafe("StarsUtils.dll");
-    if (hStarsUtilsDll == NULL) {
-      zErr->iBusinessError = GetLastError();
-      return;
-    }
+    /*StarsUtils.dll is legacy 32-bit Delphi. Calendar functions now in
+     * OLEDBIO.dll*/
+    /* No longer loading StarsUtils.dll - using OLEDBIO instead */
+    hStarsUtilsDll = NULL;
     /*Load Performance.dll*/
     hPerformanceDll = LoadLibrarySafe("Performance.dll");
     if (hPerformanceDll == NULL) {
@@ -1038,7 +1042,7 @@ void STDCALL InitializeDllRoutines(long lAsofDate, char *sDBAlias, char *sMode,
     }
 
     lpfnCurrentDateAndTime =
-        (LPFN2VOID)GetProcAddress(hStarsUtilsDll, "CurrentDateAndTime");
+        (LPFN2VOID)GetProcAddress(hStarsIODll, "CurrentDateAndTime");
     if (!lpfnCurrentDateAndTime) {
       lpfnPrintError("Unable To Load CurrentDateAndTime function", 0, 0, "",
                      GetLastError(), 0, 0, "CompCreate INITS01", FALSE);
@@ -1046,7 +1050,7 @@ void STDCALL InitializeDllRoutines(long lAsofDate, char *sDBAlias, char *sMode,
       return;
     }
 
-    lpfnLastMonthEnd = (LPFN1INT)GetProcAddress(hStarsUtilsDll, "LastMonthEnd");
+    lpfnLastMonthEnd = (LPFN1INT)GetProcAddress(hStarsIODll, "LastMonthEnd");
     if (!lpfnLastMonthEnd) {
       lpfnPrintError("Error Loading LastMonthEnd Function", 0, 0, "",
                      GetLastError(), 0, 0, "CompCreate INITS02", FALSE);
@@ -1054,8 +1058,7 @@ void STDCALL InitializeDllRoutines(long lAsofDate, char *sDBAlias, char *sMode,
       return;
     }
 
-    lpfnIsItAMonthEnd =
-        (LPFN1INT)GetProcAddress(hStarsUtilsDll, "IsItAMonthEnd");
+    lpfnIsItAMonthEnd = (LPFN1INT)GetProcAddress(hStarsIODll, "IsItAMonthEnd");
     if (!lpfnIsItAMonthEnd) {
       lpfnPrintError("Error Loading IsItAMonthEnd Function", 0, 0, "",
                      GetLastError(), 0, 0, "CompCreate INITS03", FALSE);
@@ -1160,6 +1163,12 @@ ERRSTRUCT STDCALL WINAPI MergeCompositePortfolio(int iID, long lFromDate,
   lpprInitializeErrStruct(&zErr);
   lpprInitializeErrStruct(&zErr2);
   memset(&zSummdata, 0, sizeof(zSummdata));
+
+  if (!bCompCreateInit) {
+    memset(&zErr, 0, sizeof(ERRSTRUCT));
+    zErr.iSqlError = -1;
+    return zErr;
+  }
 
   __try {
 

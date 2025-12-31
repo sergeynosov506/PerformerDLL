@@ -1,0 +1,48 @@
+Microsoft (R) COFF/PE Dumper Version 14.50.35719.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file E:\projects\PerformerDLL\TransEngine.dll
+
+File Type: DLL
+
+  Section contains the following exports for TransEngine.dll
+
+    00000000 characteristics
+    FFFFFFFF time date stamp
+        0.00 version
+           1 ordinal base
+          17 number of functions
+          17 number of names
+
+    ordinal hint RVA      name
+
+          3    0 000010D7 AddTransToTransTable2 = @ILT+210(AddTransToTransTable2)
+          4    1 0000458E CalculateInflationRate = @ILT+13705(CalculateInflationRate)
+          5    2 00004598 CalculatePhantomIncome = @ILT+13715(CalculatePhantomIncome)
+          6    3 000039AE InitTranProc = @ILT+10665(InitTranProc)
+          7    4 000046AB InitializeDtransDesc = @ILT+13990(InitializeDtransDesc)
+          8    5 0000316B InitializeErrStruct = @ILT+8550(InitializeErrStruct)
+          9    6 00001FB4 InitializeHoldcashStruct = @ILT+4015(InitializeHoldcashStruct)
+         10    7 000034EA InitializeHoldingsStruct = @ILT+9445(InitializeHoldingsStruct)
+         11    8 000015B9 InitializePortmainStruct = @ILT+1460(InitializePortmainStruct)
+         12    9 00002CCA InitializeTransStruct = @ILT+7365(InitializeTransStruct)
+         13    A 000038E1 InitializeTransTable2 = @ILT+10460(InitializeTransTable2)
+         14    B 00001F41 PrintError = @ILT+3900(PrintError)
+         15    C 0000464C SetErrorFileName = @ILT+13895(SetErrorFileName)
+         16    D 000037DD TranAlloc = @ILT+10200(TranAlloc)
+          1    E 00003B07 TranProc = @ILT+11010(?TranProc@@YA?AUERRSTRUCT@@HPEAD0J0HH@Z)
+          2    F 000039E5 TranProcInfo = @ILT+10720(?TranProcInfo@@YA?AUERRSTRUCT@@HPEAD0J0@Z)
+         17   10 0000467E UpdateHold = @ILT+13945(UpdateHold)
+
+  Summary
+
+        1000 .00cfg
+        4000 .data
+        1000 .fptable
+        2000 .idata
+        F000 .pdata
+       45000 .rdata
+        2000 .reloc
+        1000 .rsrc
+      199000 .text

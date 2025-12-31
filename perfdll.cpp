@@ -105,12 +105,9 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitCalcPerf(long lAsofDate, char *sDBAlias,
                              0, "CALCPERF INIT1", FALSE));
     }
 
-    StarsUtilsDll = LoadLibrarySafe("StarsUtils.dll");
-    if (StarsUtilsDll == NULL) {
-      iError = GetLastError();
-      return (lpfnPrintError("Unable To Load StarsUtils Dll", 0, 0, "", iError,
-                             0, 0, "CALCPERF INIT2", FALSE));
-    }
+    // StarsUtils.dll is legacy 32-bit Delphi. No functions are used from it in
+    // Performance.dll
+    StarsUtilsDll = NULL; // No longer loading StarsUtils.dll
 
     // Try to load the "CalcGainLoss.dll" dll created in C
     CalcGainLossDll = LoadLibrarySafe("CalcGainLoss.dll");

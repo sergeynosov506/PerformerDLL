@@ -174,11 +174,18 @@ HINSTANCE LoadLibrarySafe(LPCTSTR LibFileName) {
     appPath = ExtractFilePath(appFullName);
   else
     appPath = libPath;
+
   if (appPath.length() > 0) {
     if (appPath.back() != '\\')
       appPath += '\\';
     appPath += LibFileName;
     result = LoadLibrary(appPath.c_str());
+  }
+
+  // Fallback to searching in standard paths (current dir, etc) if path-based
+  // load failed
+  if (result == NULL) {
+    result = LoadLibrary(LibFileName);
   }
   return result;
 }

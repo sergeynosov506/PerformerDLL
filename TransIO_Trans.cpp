@@ -342,10 +342,88 @@ DLLAPI void STDCALL InsertTrans(TRANS zTrans, ERRSTRUCT *pzErr) {
   // ... (Implementation omitted for brevity, but would be here)
 }
 
-DLLAPI void STDCALL InsertPayTran(PAYTRAN zPayTran, ERRSTRUCT *pzErr) {
-  // Implementation of InsertPayTran
+DLLAPI void STDCALL SelectDPayTran(PAYTRAN *pzPayTran, int iID, long lTransNo,
+                                   ERRSTRUCT *pzErr) {
   InitializeErrStruct(pzErr);
-  // ...
+  if (!gConn.connected()) {
+    *pzErr = PrintError((char *)"Database not connected", 0, 0, (char *)"T", 0,
+                        -1, 0, (char *)"SelectDPayTran", FALSE);
+    return;
+  }
+  try {
+    nanodbc::statement stmt(gConn);
+    nanodbc::prepare(stmt, NANODBC_TEXT("SELECT ID, Dtrans_No, Payee_ID, Dsc "
+                                        "FROM DPayTran WHERE ID = ? AND "
+                                        "Dtrans_No = ?"));
+    stmt.bind(0, &iID);
+    stmt.bind(1, &lTransNo);
+    auto result = nanodbc::execute(stmt);
+    if (result.next()) {
+      pzPayTran->iID = result.get<int>(0);
+      pzPayTran->lTransNo = result.get<long>(1);
+      pzPayTran->lPayeeID = result.get<long>(2);
+      read_string(result, 3, pzPayTran->sDsc, sizeof(pzPayTran->sDsc));
+    } else {
+      pzErr->iSqlError = SQLNOTFOUND;
+    }
+  } catch (...) {
+    *pzErr = PrintError((char *)"Error in SelectDPayTran", iID, lTransNo,
+                        (char *)"T", 0, -1, 0, (char *)"SelectDPayTran", FALSE);
+  }
+}
+
+DLLAPI void STDCALL SelectPayTran(PAYTRAN *pzPayTran, int iID, long lTransNo,
+                                  ERRSTRUCT *pzErr) {
+  InitializeErrStruct(pzErr);
+  if (!gConn.connected()) {
+    *pzErr = PrintError((char *)"Database not connected", 0, 0, (char *)"T", 0,
+                        -1, 0, (char *)"SelectPayTran", FALSE);
+    return;
+  }
+  try {
+    nanodbc::statement stmt(gConn);
+    nanodbc::prepare(stmt, NANODBC_TEXT("SELECT ID, trans_no, Payee_ID, Dsc "
+                                        "FROM PayTran WHERE ID = ? AND "
+                                        "trans_no = ?"));
+    stmt.bind(0, &iID);
+    stmt.bind(1, &lTransNo);
+    auto result = nanodbc::execute(stmt);
+    if (result.next()) {
+      pzPayTran->iID = result.get<int>(0);
+      pzPayTran->lTransNo = result.get<long>(1);
+      pzPayTran->lPayeeID = result.get<long>(2);
+      read_string(result, 3, pzPayTran->sDsc, sizeof(pzPayTran->sDsc));
+    } else {
+      pzErr->iSqlError = SQLNOTFOUND;
+    }
+  } catch (...) {
+    *pzErr = PrintError((char *)"Error in SelectPayTran", iID, lTransNo,
+                        (char *)"T", 0, -1, 0, (char *)"SelectPayTran", FALSE);
+  }
+}
+
+DLLAPI void STDCALL InsertPayTran(PAYTRAN zPayTran, ERRSTRUCT *pzErr) {
+  InitializeErrStruct(pzErr);
+  if (!gConn.connected()) {
+    *pzErr = PrintError((char *)"Database not connected", 0, 0, (char *)"T", 0,
+                        -1, 0, (char *)"InsertPayTran", FALSE);
+    return;
+  }
+  try {
+    nanodbc::statement stmt(gConn);
+    nanodbc::prepare(stmt, NANODBC_TEXT("INSERT INTO PayTran (ID, trans_no, "
+                                        "Payee_ID, Dsc) VALUES (?, ?, ?, ?)"));
+    int p = 0;
+    stmt.bind(p++, &zPayTran.iID);
+    stmt.bind(p++, &zPayTran.lTransNo);
+    stmt.bind(p++, &zPayTran.lPayeeID);
+    safe_bind_string(stmt, p, zPayTran.sDsc);
+    nanodbc::execute(stmt);
+  } catch (...) {
+    *pzErr = PrintError((char *)"Error in InsertPayTran", zPayTran.iID,
+                        zPayTran.lTransNo, (char *)"T", 0, -1, 0,
+                        (char *)"InsertPayTran", FALSE);
+  }
 }
 
 DLLAPI void STDCALL UpdateBrokerInTrans(TRANS zTR, ERRSTRUCT *pzErr) {

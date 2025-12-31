@@ -3,7 +3,6 @@
 #include "dateutils.h"
 #include "nanodbc/nanodbc.h"
 
-
 extern thread_local nanodbc::connection gConn;
 
 static void FillTransStruct(nanodbc::result &result, TRANS *pzTR) {
@@ -748,9 +747,62 @@ DLLAPI void STDCALL UpdatePerfDate(long iId, long lStartDate, long lEndDate,
     long_to_timestamp(lEndDate, ts2);
     stmt.bind(2, &ts2);
 
+    stmt.bind(2, &ts2);
+
     stmt.execute();
   } catch (const std::exception &e) {
     *pzErr = PrintError("UpdatePerfDate", 0, 0, "", 0, 0, 0, (char *)e.what(),
                         FALSE);
+  }
+}
+
+DLLAPI void STDCALL SelectTransBySettlementDate(long iID, long lStlDate,
+                                                TRANS *pzTR, ERRSTRUCT *pzErr) {
+#ifdef DEBUG
+  PrintError("Entering", 0, 0, "", 0, 0, 0, "SelectTransBySettlementDate",
+             FALSE);
+#endif
+  InitializeErrStruct(pzErr);
+  try {
+    nanodbc::statement stmt(gConn);
+    nanodbc::prepare(
+        stmt,
+        NANODBC_TEXT(
+            "SELECT id, trans_no, tran_type, sec_no, wi, sec_xtend, acct_type, "
+            "secid, sec_symbol, units, orig_face, unit_cost, tot_cost, "
+            "orig_cost, pcpl_amt, opt_prem, amort_val, basis_adj, comm_gcr, "
+            "net_comm, comm_code, sec_fees, misc_fee1, fee_code1, misc_fee2, "
+            "fee_code2, accr_int, income_amt, net_flow, broker_code, "
+            "broker_code2, trd_date, stl_date, eff_date, entry_date, "
+            "taxlot_no, xref_trans_no, pend_div_no, rev_trans_no, rev_type, "
+            "new_trans_no, orig_trans_no, block_trans_no, x_id, x_trans_no, "
+            "x_sec_no, x_wi, x_sec_xtend, x_acct_type, x_secid, curr_id, "
+            "curr_acct_type, inc_curr_id, inc_acct_type, x_curr_id, "
+            "x_curr_acct_type, sec_curr_id, accr_curr_id, base_xrate, "
+            "inc_base_xrate, sec_base_xrate, accr_base_xrate, sys_xrate, "
+            "inc_sys_xrate, base_open_xrate, sys_open_xrate, open_trd_date, "
+            "open_stl_date, open_unit_cost, orig_yld, eff_mat_date, "
+            "eff_mat_price, acct_mthd, trans_srce, adp_tag, div_type, "
+            "div_factor, divint_no, roll_date, perf_date, misc_desc_ind, "
+            "dr_cr, bal_to_adjust, cap_trans, safek_ind, dtc_inclusion, "
+            "dtc_resolve, recon_flag, recon_srce, income_flag, letter_flag, "
+            "ledger_flag, gl_flag, created_by, create_date, create_time, "
+            "post_date, bkof_frmt, bkof_seq_no, dtrans_no, price, "
+            "restriction_code FROM trans WHERE id = ? AND stl_date = ?"));
+
+    stmt.bind(0, &iID);
+    nanodbc::timestamp ts;
+    long_to_timestamp(lStlDate, ts);
+    stmt.bind(1, &ts);
+
+    nanodbc::result result = stmt.execute();
+    if (result.next()) {
+      FillTransStruct(result, pzTR);
+    } else {
+      pzErr->iSqlError = SQLNOTFOUND;
+    }
+  } catch (const std::exception &e) {
+    *pzErr = PrintError("SelectTransBySettlementDate", 0, 0, "", 0, 0, 0,
+                        (char *)e.what(), FALSE);
   }
 }

@@ -1,0 +1,164 @@
+MSBuild version 18.0.5+e22287bf1 for .NET Framework
+
+  AmortizeIO.cpp
+  AssetPricingIO.cpp
+  DateFunctions.cpp
+e:\projects\PerformerDLL\Source\DateFunctions.cpp(96,30): warning C4838: conversion from 'int' to 'int16_t' requires a narrowing conversion [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\DateFunctions.cpp(96,33): warning C4838: conversion from 'int' to 'int16_t' requires a narrowing conversion [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\DateFunctions.cpp(96,36): warning C4838: conversion from 'int' to 'int16_t' requires a narrowing conversion [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+  DigenerateOps.cpp
+  DigenerateQueries.cpp
+  DigenerateSelectors.cpp
+  DigenerateUtils.cpp
+  DipayIO.cpp
+  MaturityIO.cpp
+  MergeOps.cpp
+  MergeQueries.cpp
+  MergeSelectors.cpp
+  MergeUtils.cpp
+  nanodbc.cpp
+e:\projects\PerformerDLL\Source\nanodbc\nanodbc.cpp(3132,61): warning C4267: 'return': conversion from 'size_t' to 'short', possible loss of data [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+  variant_row_cached_result.cpp
+  OLEDBIO.cpp
+  OLEDBIOCommon.cpp
+  OLEDBIO_test.cpp
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u041D' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0435' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0443' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0434' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0430' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u043B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u043E' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0441' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u044C' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0437' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0433' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0440' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0438' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0442' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u041E' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0448' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u0431' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(16,22): warning C4566: character represented by universal-character-name '\u043A' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u041D' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0435' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u043D' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0430' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0439' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0434' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0444' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0443' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u043A' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0446' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0438' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u044F' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0432' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u041E' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0448' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(35,22): warning C4566: character represented by universal-character-name '\u0431' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u0412' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u044B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u0437' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u0432' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u0430' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u0435' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(52,18): warning C4566: character represented by universal-character-name '\u043C' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u041E' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u0448' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u0438' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u0431' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u043A' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u0430' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u043D' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u0446' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u043B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(57,22): warning C4566: character represented by universal-character-name '\u0437' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u0443' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u0441' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u043F' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u0435' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u0448' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u043D' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u043E' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u0432' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u044B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(61,22): warning C4566: character represented by universal-character-name '\u043B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u041D' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0430' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0436' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u043C' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0438' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0442' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0435' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0434' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u043B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u044F' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0432' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u044B' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u0445' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+e:\projects\PerformerDLL\Source\OLEDBIO_test.cpp(67,18): warning C4566: character represented by universal-character-name '\u043E' cannot be represented in the current code page (1252) [e:\projects\PerformerDLL\Source\OLEDBIO.vcxproj]
+  PerformanceIO_Common.cpp
+  PerformanceIO_DSumdata.cpp
+  Generating Code...
+  Compiling...
+  PerformanceIO_Hkeyrltn.cpp
+  PerformanceIO_Holdings.cpp
+  PerformanceIO_Holdtot.cpp
+  PerformanceIO_Lookups.cpp
+  PerformanceIO_Perfctrl.cpp
+  PerformanceIO_Perfkey.cpp
+  PerformanceIO_Scripts.cpp
+  PerformanceIO_SecTrans.cpp
+  PerformanceIO_Summdata.cpp
+  PerformanceIO_Taxperf.cpp
+  PerformanceIO_UnitValue.cpp
+  RollIO_Account.cpp
+  RollIO_Holdmap.cpp
+  RollIO_Portmain.cpp
+  RollIO_Position.cpp
+  RollIO_Trans.cpp
+  TransImportIO_new.cpp
+  TransIO_AccDiv.cpp
+  TransIO_Assets.cpp
+  TransIO_Currency.cpp
+  Generating Code...
+  Compiling...
+  TransIO_DControl.cpp
+  TransIO_Deriv.cpp
+  TransIO_Divhist.cpp
+  TransIO_DTrans.cpp
+  TransIO_DTransDesc.cpp
+  TransIO_Fixedinc.cpp
+  TransIO_Hedgexref.cpp
+  TransIO_Holdcash.cpp
+  TransIO_Holddel.cpp
+  TransIO_Holdings.cpp
+  TransIO_Holdmap.cpp
+  TransIO_Income.cpp
+  TransIO_Login.cpp
+  TransIO_Payrec.cpp
+  TransIO_Portlock.cpp
+  TransIO_Portmain.cpp
+  TransIO_Sectype.cpp
+  TransIO_SecurityPrice.cpp
+  TransIO_StarsDat.cpp
+  TransIO_Subaccount.cpp
+  Generating Code...
+  Compiling...
+  TransIO_Syssettings.cpp
+  TransIO_Trans.cpp
+  TransIO_TransDesc.cpp
+  TransIO_Trantype.cpp
+  ValuationIO_Accdiv.cpp
+  ValuationIO_Divhist.cpp
+  ValuationIO_Histpric.cpp
+  ValuationIO_Holdings.cpp
+  ValuationIO_Holdtot.cpp
+  ValuationIO_Payrec.cpp
+  ValuationIO_Segments.cpp
+  ValuationIO_Utils.cpp
+  RollIO.cpp
+  CheckForInflationIndexRatio.cpp
+  Generating Code...
+     Creating library E:\projects\PerformerDLL\OLEDBIO.lib and object E:\projects\PerformerDLL\OLEDBIO.exp
+  OLEDBIO.vcxproj -> E:\projects\PerformerDLL\OLEDBIO.dll
