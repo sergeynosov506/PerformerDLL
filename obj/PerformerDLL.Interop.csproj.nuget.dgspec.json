@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj": {}
+    "e:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj": {}
   },
   "projects": {
-    "E:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj": {
+    "e:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
+        "projectUniqueName": "e:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
         "projectName": "PerformerDLL.Interop",
-        "projectPath": "E:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
+        "projectPath": "e:\\projects\\PerformerDLL\\Source\\PerformerDLL.Interop.csproj",
         "packagesPath": "C:\\Users\\Sergey\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\PerformerDLL\\Source\\obj\\",
+        "outputPath": "e:\\projects\\PerformerDLL\\Source\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

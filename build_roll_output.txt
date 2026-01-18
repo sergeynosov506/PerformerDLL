@@ -1,0 +1,12 @@
+MSBuild version 18.0.5+e22287bf1 for .NET Framework
+
+  commonfunctions.cpp
+  roll.cpp
+e:\projects\PerformerDLL\Source\roll.cpp(333,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [e:\projects\PerformerDLL\Roll\Roll.vcxproj]
+e:\projects\PerformerDLL\Source\roll.cpp(343,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [e:\projects\PerformerDLL\Roll\Roll.vcxproj]
+e:\projects\PerformerDLL\Source\roll.cpp(2165,18): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [e:\projects\PerformerDLL\Roll\Roll.vcxproj]
+e:\projects\PerformerDLL\Source\roll.cpp(3142,18): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [e:\projects\PerformerDLL\Roll\Roll.vcxproj]
+e:\projects\PerformerDLL\Source\roll.cpp(4084,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [e:\projects\PerformerDLL\Roll\Roll.vcxproj]
+  Generating Code...
+     Creating library .\Debug/Roll.lib and object .\Debug/Roll.exp
+  Roll.vcxproj -> E:\projects\PerformerDLL\Roll.dll

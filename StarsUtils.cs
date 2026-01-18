@@ -19,7 +19,7 @@ namespace PerformerDLL.Interop.Wrappers;
 /// </remarks>
 public static class StarsUtils
 {
-    private const string DLL_NAME = "OLEDBIO.dll";
+    private const string DLL_NAME = "StarsUtils.dll";
 
     #region Month End Functions
 
@@ -221,6 +221,82 @@ public static class StarsUtils
         int day = date % 100;
         return new DateTime(year, month, day);
     }
+
+    #region Bond Calculation Functions
+
+    /// <summary>
+    /// Calculate all yields (YTM, YTC, YTP) for a bond.
+    /// </summary>
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern void CalculateAllYields(
+        double dPrice,
+        [MarshalAs(UnmanagedType.LPStr)] string pSec_No,
+        [MarshalAs(UnmanagedType.LPStr)] string pWi,
+        int lSettleDate,
+        int Opt,
+        out double dYieldToMaturity,
+        out double dYieldToCall,
+        out double dYieldToPut);
+
+    /// <summary>
+    /// Calculate yield given price.
+    /// </summary>
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern double CalulateYield(
+        double dPrice,
+        [MarshalAs(UnmanagedType.LPStr)] string pSec_No,
+        [MarshalAs(UnmanagedType.LPStr)] string pWi,
+        [MarshalAs(UnmanagedType.LPStr)] string pYieldType,
+        int lMaturityDate,
+        int Opt);
+
+    /// <summary>
+    /// Calculate modified duration from yield.
+    /// </summary>
+    [DllImport(DLL_NAME, EntryPoint = "CalculateModDurationFromYield", CallingConvention = CallingConvention.StdCall)]
+    public static extern double CalculateModDurationFromYield(
+        double dYield,
+        [MarshalAs(UnmanagedType.LPStr)] string Sec_No,
+        [MarshalAs(UnmanagedType.LPStr)] string Wi,
+        [MarshalAs(UnmanagedType.LPStr)] string YieldType,
+        double SettlementDate,
+        int Opt);
+
+    /// <summary>
+    /// Calculate Macaulay duration from yield.
+    /// </summary>
+    [DllImport(DLL_NAME, EntryPoint = "CalculateMacaulayDurationFromYield", CallingConvention = CallingConvention.StdCall)]
+    public static extern double CalculateMacaulayDurationFromYield(
+        double dYield,
+        [MarshalAs(UnmanagedType.LPStr)] string Sec_No,
+        [MarshalAs(UnmanagedType.LPStr)] string Wi,
+        [MarshalAs(UnmanagedType.LPStr)] string YieldType,
+        double SettlementDate,
+        int Opt);
+
+    /// <summary>
+    /// Calculate convexity.
+    /// </summary>
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern double CalculateConvexity(
+        [MarshalAs(UnmanagedType.LPStr)] string sTicker,
+        double priceDate,
+        double Price,
+        double dYieldToMaturity);
+
+    /// <summary>
+    /// Calculate price given yield.
+    /// </summary>
+    [DllImport(DLL_NAME, CallingConvention = CallingConvention.StdCall)]
+    public static extern double CalulatePriceGivenYield(
+        double dYield,
+        [MarshalAs(UnmanagedType.LPStr)] string pSec_No,
+        [MarshalAs(UnmanagedType.LPStr)] string pWi,
+        [MarshalAs(UnmanagedType.LPStr)] string pYieldType,
+        int SettlementDate,
+        int Opt);
+
+    #endregion
 
     #endregion
 }

@@ -2162,10 +2162,17 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
   static char sLastAlias[80] = "";
   static long lLastDate = -1;
 
+  FILE *fDebug = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+  if (fDebug) {
+    fprintf(fDebug, "InitRoll: Entered. lAsofDate=%ld, bInit=%d\n", lAsofDate,
+            bInit);
+    fflush(fDebug);
+  }
+
   if (!bInit) {
-    FILE *fDebug = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
     if (fDebug) {
       fprintf(fDebug, "InitRoll: Starting initialization (bInit=FALSE)\n");
+      fflush(fDebug);
     }
 
     // Load "TransEngine" dll created in C
@@ -2174,14 +2181,17 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
       if (fDebug) {
         fprintf(fDebug, "InitRoll: Failed to load TransEngine.dll (Error %d)\n",
                 GetLastError());
+        fflush(fDebug);
         fclose(fDebug);
       }
       zErr.iBusinessError = GetLastError();
       zErr.iSqlError = -1; // Explicitly set it so it's not garbage
       return zErr;
     }
-    if (fDebug)
+    if (fDebug) {
       fprintf(fDebug, "InitRoll: Loaded TransEngine.dll\n");
+      fflush(fDebug);
+    }
 
     // Load "StarsIO" dll created in Delphi
     // hOledbIODll = LoadLibrarySafe("StarsIO.dll");
@@ -2496,84 +2506,202 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
       fflush(fDebug);
     }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountInsertHoldings...\n");
+      fflush(fDebug);
+    }
     lpprAccountInsertHoldings = (LPPR1LONG4PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountInsertHoldings");
     if (!lpprAccountInsertHoldings) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountInsertHoldings (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountInsertHold Function", 0, 0,
                              "", iError, 0, 0, "ROLL INIT11", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountInsertHoldings.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountInsertHoldcash...\n");
+      fflush(fDebug);
+    }
     lpprAccountInsertHoldcash = (LPPR1LONG4PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountInsertHoldcash");
     if (!lpprAccountInsertHoldcash) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountInsertHoldcash (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountInsertHoldcash Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT12", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountInsertHoldcash.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountInsertHedgxref...\n");
+      fflush(fDebug);
+    }
     lpprAccountInsertHedgxref = (LPPR1LONG4PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountInsertHedgxref");
     if (!lpprAccountInsertHedgxref) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountInsertHedgxref (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountInsertHedgxref Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT13", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountInsertHedgxref.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountInsertPayrec...\n");
+      fflush(fDebug);
+    }
     lpprAccountInsertPayrec = (LPPR1LONG4PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountInsertPayrec");
     if (!lpprAccountInsertPayrec) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountInsertPayrec (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountInsertPayrec Function", 0, 0,
                              "", iError, 0, 0, "ROLL INIT14", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountInsertPayrec.\n");
+      fflush(fDebug);
+    }
 
-    /*lpprAccountInsertPortbal = (LPPR1LONG2PCHAR)GetProcAddress(hOledbIODll,
-    "AccountInsertPortbal"); if(!lpprAccountInsertPortbal)
-    {
-            iError = GetLastError();
-      return(lpfnPrintError("Error Loading AccountInsertPortbal Function", 0, 0,
-    "", iError, 0, 0, "ROLL INIT8", FALSE));
-    }*/
-
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountInsertPortmain...\n");
+      fflush(fDebug);
+    }
     lpprAccountInsertPortmain =
         (LPPR1LONG2PCHAR)GetProcAddress(hOledbIODll, "AccountInsertPortmain");
     if (!lpprAccountInsertPortmain) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountInsertPortmain (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountInsertPortmain Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT15", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountInsertPortmain.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountDeleteHoldings...\n");
+      fflush(fDebug);
+    }
     lpprAccountDeleteHoldings = (LPPR1LONG3PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountDeleteHoldings");
     if (!lpprAccountDeleteHoldings) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountDeleteHoldings (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountDeleteHoldings Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT16", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountDeleteHoldings.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountDeleteHoldcash...\n");
+      fflush(fDebug);
+    }
     lpprAccountDeleteHoldcash = (LPPR1LONG3PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountDeleteHoldcash");
     if (!lpprAccountDeleteHoldcash) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountDeleteHoldcash (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountDeleteHoldcash Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT17", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountDeleteHoldcash.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountDeleteHedgxref...\n");
+      fflush(fDebug);
+    }
     lpprAccountDeleteHedgxref = (LPPR1LONG3PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountDeleteHedgxref");
     if (!lpprAccountDeleteHedgxref) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountDeleteHedgxref (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountDeleteHedgxref Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT18", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountDeleteHedgxref.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding AccountDeletePayrec...\n");
+      fflush(fDebug);
+    }
     lpprAccountDeletePayrec = (LPPR1LONG3PCHAR1BOOL)GetProcAddress(
         hOledbIODll, "AccountDeletePayrec");
     if (!lpprAccountDeletePayrec) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountDeletePayrec (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountDeletePayrec Function", 0, 0,
                              "", iError, 0, 0, "ROLL INIT19", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountDeletePayrec.\n");
+      fflush(fDebug);
     }
 
     if (fDebug) {
@@ -2602,6 +2730,10 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
       fflush(fDebug);
     }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: DEBUG Trace 1\n");
+      fflush(fDebug);
+    }
     /*lpprAccountDeletePortbal = (LPPR1LONG1PCHAR) GetProcAddress(hOledbIODll,
     "AccountDeletePortbal"); if(!lpprAccountDeletePortbal)
     {
@@ -2609,206 +2741,376 @@ DLLAPI ERRSTRUCT STDCALL WINAPI InitRoll(char *sDBPath, char *sType,
       return(lpfnPrintError("Error Loading AccountDeletePortbal Function", 0, 0,
     "", iError, 0, 0, "ROLL INIT8", FALSE));
     }*/
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: DEBUG Trace 2\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug,
+              "InitRoll: Finding AccountDeletePortmain in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpprAccountDeletePortmain =
         (LPPR1LONG1PCHAR)GetProcAddress(hOledbIODll, "AccountDeletePortmain");
     if (!lpprAccountDeletePortmain) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find AccountDeletePortmain (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AccountDeletePortmain Function", 0,
                              0, "", iError, 0, 0, "ROLL INIT20", FALSE));
     }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found AccountDeletePortmain.\n");
+      fflush(fDebug);
+    }
 
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Finding ReadAllHoldmap in OLEDBIO...\n");
+      fflush(fDebug);
+    }
     lpprSelectAllHoldmap =
         (LPPR8PCHAR1PLONG)GetProcAddress(hOledbIODll, "ReadAllHoldmap");
     if (!lpprSelectAllHoldmap) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find ReadAllHoldmap (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading FetchHMapCursor Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT21", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found ReadAllHoldmap.\n");
+      fflush(fDebug);
     }
 
     lpprAsofTransCount = (LPPR3LONG2PCHAR1BOOL1PINT)GetProcAddress(
         hOledbIODll, "SelectAsofTransCount");
     if (!lpprAsofTransCount) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find SelectAsofTransCount (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AsofTransCount", 0, 0, "", iError,
                              0, 0, "ROLL INIT22", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectAsofTransCount.\n");
+      fflush(fDebug);
     }
 
     lpprBackwardTrans = (LPPR3LONG2PCHAR1BOOL1PTRANS)GetProcAddress(
         hOledbIODll, "SelectBackwardTrans");
     if (!lpprBackwardTrans) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find SelectBackwardTrans (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading BackwardTrans Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT23", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectBackwardTrans.\n");
+      fflush(fDebug);
     }
 
     lpprForwardTrans = (LPPR3LONG2PCHAR1BOOL1PTRANS)GetProcAddress(
         hOledbIODll, "SelectForwardTrans");
     if (!lpprForwardTrans) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find SelectForwardTrans (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading ForwardTrans Function", 0, 0, "",
                              iError, 0, 0, "ROLL INIT24", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectForwardTrans.\n");
+      fflush(fDebug);
     }
 
     lpprRegTransCount = (LPPR3LONG2PCHAR1BOOL1PINT)GetProcAddress(
         hOledbIODll, "SelectRegularTransCount");
     if (!lpprRegTransCount) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find SelectRegularTransCount (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading RegTransCount", 0, 0, "", iError, 0,
                              0, "ROLL INIT25", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectRegularTransCount.\n");
+      fflush(fDebug);
     }
 
     lpprDestUpd1Portmain = (LPPR3LONG1PCHAR)GetProcAddress(
         hOledbIODll, "UpdateRollDateAndLastTransNo");
     if (!lpprDestUpd1Portmain) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find UpdateRollDateAndLastTransNo (Error "
+                "%d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading DestUpd1Portmain", 0, 0, "", iError,
                              0, 0, "ROLL INIT26", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found UpdateRollDateAndLastTransNo.\n");
+      fflush(fDebug);
     }
 
     lpprDestUpd2Portmain =
         (LPPR2LONG1PCHAR)GetProcAddress(hOledbIODll, "UpdateRollDate");
     if (!lpprDestUpd2Portmain) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find UpdateRollDate (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading DestUpd2Portmain", 0, 0, "", iError,
                              0, 0, "ROLL INIT27", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found UpdateRollDate.\n");
+      fflush(fDebug);
     }
 
     lpprSelectOneHoldmap =
         (LPPR1LONG7PCHAR)GetProcAddress(hOledbIODll, "SelectHoldmap");
     if (!lpprSelectOneHoldmap) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find SelectHoldmap (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SelectHoldmap", 0, 0, "", iError, 0,
                              0, "ROLL INIT28", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectHoldmap.\n");
+      fflush(fDebug);
     }
 
     lpprSelectStarsDate =
         (LPPR2PLONG)GetProcAddress(hOledbIODll, "SelectStarsDate");
     if (!lpprSelectStarsDate) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find SelectStarsDate (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SelectStarsDate", 0, 0, "", iError,
                              0, 0, "ROLL INIT29", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectStarsDate.\n");
+      fflush(fDebug);
     }
 
     lpprAsofTrans = (LPPR3LONG2PCHAR1BOOL1PTRANS)GetProcAddress(
         hOledbIODll, "SelectAsofTrans");
     if (!lpprAsofTrans) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find SelectAsofTrans (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading AsofTrans", 0, 0, "", iError, 0, 0,
                              "ROLL INIT30", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectAsofTrans.\n");
+      fflush(fDebug);
     }
 
     lpprSrcePortmain =
         (LPPR1LONG1PCHAR1PLONG)GetProcAddress(hOledbIODll, "SelectLastTransNo");
     if (!lpprSrcePortmain) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find SelectLastTransNo (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SrcePortmain", 0, 0, "", iError, 0,
                              0, "ROLL INIT31", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectLastTransNo.\n");
+      fflush(fDebug);
     }
 
     lpprSelectRollDate =
         (LPPR1LONG1PCHAR1PLONG)GetProcAddress(hOledbIODll, "SelectRollDate");
     if (!lpprSelectRollDate) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find SelectRollDate (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SrcePortmain", 0, 0, "", iError, 0,
                              0, "ROLL INIT31A", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectRollDate.\n");
+      fflush(fDebug);
     }
 
     lpprSelectPositionIndicator =
         (LPPR3PCHAR)GetProcAddress(hOledbIODll, "SelectPositionIndicator");
     if (!lpprSelectPositionIndicator) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug,
+                "InitRoll: Failed to find SelectPositionIndicator (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SelectPositionIndicator", 0, 0, "",
                              iError, 0, 0, "ROLL INIT32", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectPositionIndicator.\n");
+      fflush(fDebug);
     }
 
     lpfnIsItAMonthEnd = (LPFN1LONG)GetProcAddress(hOledbIODll, "IsItAMonthEnd");
     if (!lpfnIsItAMonthEnd) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find IsItAMonthEnd (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading IsItAMonthEnd from OLEDBIO", 0, 0,
                              "", iError, 0, 0, "ROLL INIT33", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found IsItAMonthEnd.\n");
+      fflush(fDebug);
     }
 
     lpfnLastMonthEnd = (LP2FN1LONG)GetProcAddress(hOledbIODll, "LastMonthEnd");
     if (!lpfnLastMonthEnd) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find LastMonthEnd (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading LastMonthEnd from OLEDBIO", 0, 0,
                              "", iError, 0, 0, "ROLL INIT34", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found LastMonthEnd.\n");
+      fflush(fDebug);
     }
 
     lpprUpdatePerfDate =
         (LPPR3LONG)GetProcAddress(hOledbIODll, "UpdatePerfDate");
     if (!lpprUpdatePerfDate) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find UpdatePerfDate (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading UpdatePerfDate", 0, 0, "", iError,
                              0, 0, "ROLL INIT35", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found UpdatePerfDate.\n");
+      fflush(fDebug);
     }
 
     lpprSelectTrndesc =
         (LPPRDTRANSDESCSELECT)GetProcAddress(hOledbIODll, "SelectTransDesc");
     if (!lpprSelectTrndesc) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(fDebug, "InitRoll: Failed to find SelectTransDesc (Error %d)\n",
+                iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SelectTrndesc", 0, 0, "", iError, 0,
                              0, "ROLL INIT36", FALSE));
+    }
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectTransDesc.\n");
+      fflush(fDebug);
     }
 
     lpprSelectTransBySettlementDate = (LPPRSELECTTRANS)GetProcAddress(
         hOledbIODll, "SelectTransBySettlementDate");
     if (!lpprSelectTransBySettlementDate) {
       iError = GetLastError();
+      if (fDebug) {
+        fprintf(
+            fDebug,
+            "InitRoll: Failed to find SelectTransBySettlementDate (Error %d)\n",
+            iError);
+        fflush(fDebug);
+      }
       return (lpfnPrintError("Error Loading SelectTransBySettlementDate", 0, 0,
                              "", iError, 0, 0, "ROLL INIT37", FALSE));
     }
-
-    /*lpfnCompInsHedgxref = (LPFNCOMPINSHOLD)GetProcAddress(hOledbIODll,
-       "CompInsHedgxref"); if(!lpfnCompInsHedgxref)
-                {
-                        iError = GetLastError();
-                return(lpfnPrintError("Error Loading CompInsHedgxref Function",
-       0, 0, "", iError, 0, 0, "ROLL INIT8", FALSE));
-                }
-                lpfnCompInsPortmain  =
-       (LPFNCOMPINSHOLD)GetProcAddress(hOledbIODll, "CompInsPortmain");
-                if(!lpfnCompInsPortmain)
-                {
-                        iError = GetLastError();
-                return(lpfnPrintError("Error Loading CompInsPortmain Function",
-       0, 0, "", iError, 0, 0, "ROLL INIT8", FALSE));
-                }
-                lpfnCompInsPrec  = (LPFNCOMPINSHOLD)GetProcAddress(hOledbIODll,
-       "CompInsPrec"); if(!lpfnCompInsPayrec)
-                {
-                        iError = GetLastError();
-                return(lpfnPrintError("Error Loading CompInsPrec Function", 0,
-       0, "", iError, 0, 0, "ROLL INIT8", FALSE));
-                }
-                lpfnCompInsPbal  = (LPFNCOMPINSHOLD)GetProcAddress(hOledbIODll,
-       "CompInsPbal"); if(!lpfnCompInsPortbal)
-                {
-                        iError = GetLastError();
-                return(lpfnPrintError("Error Loading CompInsPbal Function", 0,
-       0, "", iError, 0, 0, "ROLL INIT8", FALSE));
-                }
-                lpfnCompInsHcash = (LPFNCOMPINSHOLD)GetProcAddress(hOledbIODll,
-       "CompInsHcash"); if(!lpfnCompInsHoldcash)
-                {
-                        iError = GetLastError();
-                return(lpfnPrintError("Error Loading CompInsHcash Function", 0,
-       0, "", iError, 0, 0, "ROLL INIT8", FALSE));
-                }
-                lpfnCompInsHold  = (LPFNCOMPINSHOLD)GetProcAddress(hOledbIODll,
-       "CompInsHold"); if(!lpfnCompInsHoldings)
-                {
-                        iError = GetLastError();
-                return(lpfnPrintError("Error Loading CompInsHold Function", 0,
-       0, "", iError, 0, 0, "ROLL INIT8", FALSE));
-
-                }*/
+    if (fDebug) {
+      fprintf(fDebug, "InitRoll: Found SelectTransBySettlementDate.\n");
+      fflush(fDebug);
+    }
 
     bInit = TRUE;
+    if (fDebug) {
+      fprintf(
+          fDebug,
+          "InitRoll: All functions loaded successfully. bInit set to TRUE.\n");
+      fflush(fDebug);
+    }
   } // If never initialized before
 
+  if (fDebug) {
+    fprintf(fDebug, "InitRoll: Calling CallInitTranProc (lAsofDate=%ld)...\n",
+            lAsofDate);
+    fflush(fDebug);
+  }
   zErr = CallInitTranProc(lAsofDate, sDBPath, sMode, sType, sErrFile);
+  if (fDebug) {
+    fprintf(fDebug, "InitRoll: CallInitTranProc returned iSqlError=%d\n",
+            zErr.iSqlError);
+    fflush(fDebug);
+  }
+
+  if (fDebug) {
+    fclose(fDebug);
+  }
   if (zErr.iSqlError != 0 || zErr.iBusinessError != 0)
     return zErr;
 
@@ -2837,23 +3139,53 @@ ERRSTRUCT CallInitTranProc(long lAsofDate, char *sDBAlias, char *sMode,
 
   lpprInitializeErrStruct(&zErr);
 
+  FILE *fDebug = fopen("C:\\Users\\Sergey\\.gemini\\roll_debug.log", "a");
+  if (fDebug) {
+    fprintf(fDebug, "CallInitTranProc: Entered. lAsofDate=%ld\n", lAsofDate);
+    fflush(fDebug);
+  }
+
   if (!bInit) {
+    if (fDebug) {
+      fprintf(fDebug, "CallInitTranProc: Not initialized. Setting defaults.\n");
+      fflush(fDebug);
+    }
     strcpy_s(sLastDBAlias, sDBAlias);
     strcpy_s(sLastMode, sMode);
     strcpy_s(sLastType, sType);
     strcpy_s(sLastErrFile, sErrFile);
   }
 
+  if (fDebug) {
+    fprintf(fDebug,
+            "CallInitTranProc: Calling lpfnInitTranProc (lAsofDate=%ld, "
+            "Alias=%s)...\n",
+            lAsofDate, sLastDBAlias);
+    fflush(fDebug);
+  }
   zErr = lpfnInitTranProc(lAsofDate, sLastDBAlias, sLastMode, sLastType, FALSE,
                           sLastErrFile);
+  if (fDebug) {
+    fprintf(fDebug,
+            "CallInitTranProc: lpfnInitTranProc returned iSqlError=%d\n",
+            zErr.iSqlError);
+    fflush(fDebug);
+  }
+
   if (zErr.iSqlError != 0 || zErr.iBusinessError != 0) {
     bInit = FALSE;
+    if (fDebug) {
+      fclose(fDebug);
+    }
     return zErr;
   }
 
   lLastDate = lAsofDate;
   bInit = TRUE;
 
+  if (fDebug) {
+    fclose(fDebug);
+  }
   return zErr;
 } // CallInitTranProc
 
